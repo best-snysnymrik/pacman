@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Pacman.Logic
 {
-	public class Levels
+	public class Defs
 	{
-		public List<MazeDef> levels;
+		public Dictionary<string, MazeDef> levels;
 	}
 	
 	public class MazeDef
