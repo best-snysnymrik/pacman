@@ -19,7 +19,7 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_4_6_8;UNITY_4_6;UNITY_ANDROID;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_UNITYEVENTS;ENABLE_NEW_HIERARCHY ;ENABLE_AUDIO_FMOD;ENABLE_TERRAIN;ENABLE_SUBSTANCE;ENABLE_GENERICS;INCLUDE_IL2CPP;INCLUDE_WP8SUPPORT;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_4_6_FEATURES;INCLUDE_WP_BLUE_SUPPORT;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;UNITY5_SCRIPTING_IN_UNITY4;ENABLE_CACHING;ENABLE_CLOTH;UNITY_ANDROID_API;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_MONO;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_OSX</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_4_6_8;UNITY_4_6;UNITY_STANDALONE_OSX;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_UNITYEVENTS;ENABLE_NEW_HIERARCHY ;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_TERRAIN;ENABLE_SUBSTANCE;ENABLE_GENERICS;INCLUDE_IL2CPP;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_4_6_FEATURES;INCLUDE_WP_BLUE_SUPPORT;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;UNITY5_SCRIPTING_IN_UNITY4;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_GAMECENTER;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_MONO;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_OSX</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
 	<NoWarn>0169</NoWarn>
@@ -46,15 +46,25 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Common\Observer.cs" />
+     <Compile Include="Assets\Scripts\Pacman\Data\DefData.cs" />
+     <Compile Include="Assets\Scripts\Pacman\Data\GameData.cs" />
+     <Compile Include="Assets\Scripts\Pacman\Data\StateData.cs" />
      <Compile Include="Assets\Scripts\Pacman\EntryPoint.cs" />
-     <Compile Include="Assets\Scripts\Pacman\Logic\DefData.cs" />
-     <Compile Include="Assets\Scripts\Pacman\Logic\GameData.cs" />
-     <Compile Include="Assets\Scripts\Pacman\Logic\StateData.cs" />
      <Compile Include="Assets\Scripts\Pacman\Model\GameController.cs" />
+     <Compile Include="Assets\Scripts\Pacman\Model\GameModel.cs" />
      <Compile Include="Assets\Scripts\Pacman\Model\GuiManager.cs" />
-     <Compile Include="Assets\Scripts\Pacman\Model\MazeElementDefId.cs" />
-     <Compile Include="Assets\Scripts\Pacman\View\Maze\MazeMediator.cs" />
-     <Compile Include="Assets\Scripts\Pacman\View\Maze\MazeView.cs" />
+     <Compile Include="Assets\Scripts\Pacman\Model\MazeModel.cs" />
+     <Compile Include="Assets\Scripts\Pacman\Model\Unit\BlinkyModel.cs" />
+     <Compile Include="Assets\Scripts\Pacman\Model\Unit\ClydeModel.cs" />
+     <Compile Include="Assets\Scripts\Pacman\Model\Unit\EnemyModel.cs" />
+     <Compile Include="Assets\Scripts\Pacman\Model\Unit\InkyModel.cs" />
+     <Compile Include="Assets\Scripts\Pacman\Model\Unit\PacmanModel.cs" />
+     <Compile Include="Assets\Scripts\Pacman\Model\Unit\PinkyModel.cs" />
+     <Compile Include="Assets\Scripts\Pacman\Model\Unit\UnitModel.cs" />
+     <Compile Include="Assets\Scripts\Pacman\Model\UnitDefId.cs" />
+     <Compile Include="Assets\Scripts\Pacman\View\GameField\GameFieldMediator.cs" />
+     <Compile Include="Assets\Scripts\Pacman\View\GameField\GameFieldView.cs" />
      <Compile Include="Assets\Scripts\Pacman\View\Scene\SceneView.cs" />
      <Compile Include="Assets\Scripts\Pacman\View\UI\Dialog\DialogPauseMediator.cs" />
      <Compile Include="Assets\Scripts\Pacman\View\UI\Dialog\DialogPauseView.cs" />
@@ -67,12 +77,60 @@
      <Compile Include="Assets\Scripts\Pacman\View\UI\Screen\ScreenMainMediator.cs" />
      <Compile Include="Assets\Scripts\Pacman\View\UI\Screen\ScreenMainView.cs" />
      <Compile Include="Assets\Scripts\Pacman\View\UI\Widget\WidgetMazeChooseButton.cs" />
+     <Compile Include="Assets\Scripts\Pacman\View\Units\Input\KeyboardInputController.cs" />
+     <Compile Include="Assets\Scripts\Pacman\View\Units\Input\TouchInputController.cs" />
+     <Compile Include="Assets\Scripts\Pacman\View\Units\UnitMediator.cs" />
+     <Compile Include="Assets\Scripts\Pacman\View\Units\UnitView.cs" />
+     <Compile Include="Assets\UnityTestTools\Assertions\AssertionComponent.cs" />
+     <Compile Include="Assets\UnityTestTools\Assertions\AssertionException.cs" />
+     <Compile Include="Assets\UnityTestTools\Assertions\Assertions.cs" />
+     <Compile Include="Assets\UnityTestTools\Assertions\CheckMethod.cs" />
+     <Compile Include="Assets\UnityTestTools\Assertions\Comparers\ActionBase.cs" />
+     <Compile Include="Assets\UnityTestTools\Assertions\Comparers\BoolComparer.cs" />
+     <Compile Include="Assets\UnityTestTools\Assertions\Comparers\ColliderComparer.cs" />
+     <Compile Include="Assets\UnityTestTools\Assertions\Comparers\ComparerBase.cs" />
+     <Compile Include="Assets\UnityTestTools\Assertions\Comparers\FloatComparer.cs" />
+     <Compile Include="Assets\UnityTestTools\Assertions\Comparers\GeneralComparer.cs" />
+     <Compile Include="Assets\UnityTestTools\Assertions\Comparers\IntComparer.cs" />
+     <Compile Include="Assets\UnityTestTools\Assertions\Comparers\IsRenderedByCamera.cs" />
+     <Compile Include="Assets\UnityTestTools\Assertions\Comparers\StringComparer.cs" />
+     <Compile Include="Assets\UnityTestTools\Assertions\Comparers\TransformComparer.cs" />
+     <Compile Include="Assets\UnityTestTools\Assertions\Comparers\ValueDoesNotChange.cs" />
+     <Compile Include="Assets\UnityTestTools\Assertions\Comparers\Vector2Comparer.cs" />
+     <Compile Include="Assets\UnityTestTools\Assertions\Comparers\Vector3Comparer.cs" />
+     <Compile Include="Assets\UnityTestTools\Assertions\Comparers\Vector4Comparer.cs" />
+     <Compile Include="Assets\UnityTestTools\Assertions\Comparers\VectorComparerBase.cs" />
+     <Compile Include="Assets\UnityTestTools\Assertions\InvalidPathException.cs" />
+     <Compile Include="Assets\UnityTestTools\Assertions\MemberResolver.cs" />
+     <Compile Include="Assets\UnityTestTools\Common\ITestResult.cs" />
+     <Compile Include="Assets\UnityTestTools\Common\TestResultState.cs" />
+     <Compile Include="Assets\UnityTestTools\IntegrationTestsFramework\TestRunner\DTOFormatter.cs" />
+     <Compile Include="Assets\UnityTestTools\IntegrationTestsFramework\TestRunner\ITestRunnerCallback.cs" />
+     <Compile Include="Assets\UnityTestTools\IntegrationTestsFramework\TestRunner\IntegrationTest.cs" />
+     <Compile Include="Assets\UnityTestTools\IntegrationTestsFramework\TestRunner\IntegrationTestAttribute.cs" />
+     <Compile Include="Assets\UnityTestTools\IntegrationTestsFramework\TestRunner\IntegrationTestsProvider.cs" />
+     <Compile Include="Assets\UnityTestTools\IntegrationTestsFramework\TestRunner\NetworkResultSender.cs" />
+     <Compile Include="Assets\UnityTestTools\IntegrationTestsFramework\TestRunner\ResultDTO.cs" />
+     <Compile Include="Assets\UnityTestTools\IntegrationTestsFramework\TestRunner\TestComponent.cs" />
+     <Compile Include="Assets\UnityTestTools\IntegrationTestsFramework\TestRunner\TestResult.cs" />
+     <Compile Include="Assets\UnityTestTools\IntegrationTestsFramework\TestRunner\TestResultRenderer.cs" />
+     <Compile Include="Assets\UnityTestTools\IntegrationTestsFramework\TestRunner\TestRunner.cs" />
+     <Compile Include="Assets\UnityTestTools\IntegrationTestsFramework\TestRunner\TestRunnerCallbackList.cs" />
+     <Compile Include="Assets\UnityTestTools\IntegrationTestsFramework\TestRunner\TestRunnerConfigurator.cs" />
+     <Compile Include="Assets\UnityTestTools\IntegrationTestsFramework\TestingAssets\CallTesting.cs" />
+     <None Include="Assets\UnityTestTools\LICENSE.txt" />
+     <None Include="Assets\Shaders\TextureColorByMask.shader" />
+     <None Include="Assets\UnityTestTools\changelog.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/4.6.8/Standalone/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="JsonFx.Json">
  <HintPath>/Volumes/Media/Unity_projects/pacman/pacman/Assets/Plugins/JsonFx.Json.dll</HintPath>
  </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{AD721B08-CEF1-9961-A6E2-D13CBCA33556}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

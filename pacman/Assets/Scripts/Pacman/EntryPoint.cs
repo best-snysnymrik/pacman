@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-using Pacman.Logic;
+using Pacman.Data;
 using Pacman.Model;
 
 namespace Pacman

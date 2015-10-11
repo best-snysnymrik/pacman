@@ -1,5 +1,5 @@
 {
-	"levels": {
+	"mazes": {
 		"0": {
 			"name": "first maze",
 			"view": {
@@ -37,7 +37,35 @@
 					6, 2, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 2, 6, 6, 2, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 2, 6,
 					6, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
 					6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6
-				]
+				],
+				"enemyStartPoint": {"x": 11, "y": 13},
+				"bonusPoint": {"x": 23, "y": 13}
+			},
+			"units": {
+				"Pacman": {
+					"position": {"x": 11, "y": 10},
+					"direction": 2
+				},
+				"Blinky": {
+					"position": {"x": 11, "y": 13},
+					"scatterPoint": {"x": 0, "y": 27},
+					"direction": 3
+				},
+				"Pinky": {
+					"position": {"x": 14, "y": 13},
+					"scatterPoint": {"x": 0, "y": 0},
+					"direction": 3
+				},
+				"Inky": {
+					"position": {"x": 14, "y": 11},
+					"scatterPoint": {"x": 30, "y": 0},
+					"direction": 3
+				},
+				"Clyde": {
+					"position": {"x": 14, "y": 15},
+					"scatterPoint": {"x": 30, "y": 27},
+					"direction": 3
+				}
 			}
 		},
 		"1": {
@@ -77,8 +105,163 @@
 					6, 2, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 2, 6, 6, 2, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 2, 6,
 					6, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
 					6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6
-				]
+				],
+				"enemyStartPoint": {"x": 11, "y": 13},
+				"bonusPoint": {"x": 23, "y": 13}
+			},
+			"units": {
+				"Pacman": {
+					"position": {"x": 11, "y": 10},
+					"direction": 2
+				},
+				"Blinky": {
+					"position": {"x": 11, "y": 13},
+					"scatterPoint": {"x": 0, "y": 27},
+					"direction": 3
+				},
+				"Pinky": {
+					"position": {"x": 14, "y": 13},
+					"scatterPoint": {"x": 0, "y": 0},
+					"direction": 3
+				},
+				"Inky": {
+					"position": {"x": 14, "y": 11},
+					"scatterPoint": {"x": 30, "y": 0},
+					"direction": 3
+				},
+				"Clyde": {
+					"position": {"x": 14, "y": 15},
+					"scatterPoint": {"x": 30, "y": 27},
+					"direction": 3
+				}
 			}
 		}
-	}
+	},
+	"units": {
+		"Pacman": {
+			"prefab": "GameElements/Prefabs/Units/unit",
+			"material": "GameElements/Materials/Pacman",
+			"entryDotCount": 0,
+			"baseSpeed": 2
+		},
+		"Blinky": {
+			"prefab": "GameElements/Prefabs/Units/unit",
+			"material": "GameElements/Materials/Blinky",
+			"entryDotCount": 0,			
+			"baseSpeed": 2
+		},
+		"Pinky": {
+			"prefab": "GameElements/Prefabs/Units/unit",
+			"material": "GameElements/Materials/Pinky",
+			"entryDotCount": 0,
+			"baseSpeed": 2
+		},
+		"Inky": {
+			"prefab": "GameElements/Prefabs/Units/unit",
+			"material": "GameElements/Materials/Inky",
+			"entryDotCount": 30,
+			"baseSpeed": 2
+		},
+		"Clyde": {
+			"prefab": "GameElements/Prefabs/Units/unit",
+			"material": "GameElements/Materials/Clyde",
+			"entryDotCount": 90,
+			"baseSpeed": 2
+		}
+	},
+	"mazeElements": {
+		"1": {
+			"prefab": "GameElements/Prefabs/Maze/elements/floor"
+		},
+		"2": {
+			"prefab": "GameElements/Prefabs/Maze/elements/dot"
+		},
+		"3": {
+			"prefab": "GameElements/Prefabs/Maze/elements/energizer"
+		},
+		"4": {
+			"prefab": "GameElements/Prefabs/Maze/elements/floor"
+		},
+		"5": {
+			"prefab": "GameElements/Prefabs/Maze/elements/door"
+		},
+		"6": {
+			"prefab": "GameElements/Prefabs/Maze/elements/wall"
+		}
+	},
+	"bonuses": {
+		"types": {
+			"cherry" : {
+				"prefab" : "prefab"
+			}
+		},
+		"dropMoments": [
+			{
+				"dotCount": 70
+			},
+			{
+				"dotCount": 170
+			}
+		],
+		"accessTime": 10
+	},
+	"levels": [
+		{
+			"enemyBehavior": {
+				"periods": [
+					{
+						"mode": 1,
+						"time": 7
+					},
+					{
+						"mode": 0,
+						"time": 20
+					},
+					{
+						"mode": 1,
+						"time": 7
+					},
+					{
+						"mode": 0,
+						"time": 20
+					},
+					{
+						"mode": 1,
+						"time": 5
+					},
+					{
+						"mode": 0,
+						"time": 20
+					},
+					{
+						"mode": 1,
+						"time": 5
+					},
+					{
+						"mode": 0,
+						"time": 0
+					}
+				],
+				"frighteningTime": 15
+			},
+			"speed": {
+				"Pacman": {
+					"unitBehaviorFactors": {
+						"normal": 0.8,
+						"frightening": 0.9
+					}	
+				},
+				"Enemy": {
+					"unitBehaviorFactors": {
+						"normal": 0.75,
+						"frightening": 0.5
+					}
+				}
+			},
+			"bonus": {
+				"type": "cherry",
+				"scores": 100
+			}
+		}
+	]
 }

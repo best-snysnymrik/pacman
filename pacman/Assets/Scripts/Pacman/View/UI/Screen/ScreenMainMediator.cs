@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-using Pacman.Logic;
+using Pacman.Data;
 using Pacman.Model;
 
 namespace Pacman.View.UI.Screen
@@ -31,7 +31,7 @@ namespace Pacman.View.UI.Screen
 		
 		private void CreateMazeButtons()
 		{
-			foreach (var maze in gameData.defs.levels)
+			foreach (var maze in gameData.defs.mazes)
 				view.CreateMazeButton(maze.Key, maze.Value.name);
 		}
 		
