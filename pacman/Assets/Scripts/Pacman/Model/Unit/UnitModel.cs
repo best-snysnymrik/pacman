@@ -126,6 +126,30 @@ namespace Pacman.Model.Unit
 			}			
 		}
 		
+		public void Pause()
+		{
+			try
+			{
+				mediator.Pause();
+			}
+			catch (NullReferenceException e)
+			{
+				Debug.LogException(e);
+			}
+		}
+		
+		public void Resume()
+		{
+			try
+			{
+				mediator.Resume();
+			}
+			catch (NullReferenceException e)
+			{
+				Debug.LogException(e);
+			}
+		}
+		
 		public virtual UnitPosition GetNextMovePoint()
 		{
 			return CurrentPosition;
@@ -189,6 +213,13 @@ namespace Pacman.Model.Unit
 		
 		protected void UpdatePosition()
 		{
+			Point newPoint = new Point();
+			newPoint.x = CurrentPosition.point.x;
+			newPoint.y = CurrentPosition.point.y;
+			
+			gameData.state.mazes[gameController.CurrentMaze].units[UnitId].position = newPoint;
+			gameData.state.mazes[gameController.CurrentMaze].units[UnitId].direction = (int)CurrentPosition.direction;
+			
 			foreach (var observer in observers)
                   observer.OnNext(new UnitInfo(UnitId, CurrentPosition));
 		}
@@ -208,7 +239,7 @@ namespace Pacman.Model.Unit
 		}
 	}
 	
-	public class UnitInfo
+	public struct UnitInfo
 	{
 		public string id;
 		public UnitPosition position;

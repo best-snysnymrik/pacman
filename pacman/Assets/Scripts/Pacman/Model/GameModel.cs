@@ -23,6 +23,7 @@ namespace Pacman.Model
 			set
 			{
 				dotCount = value;
+				gameData.state.mazes[gameController.CurrentMaze].dots = dotCount;
 				
 				EnterEnemies(value);
 				DropBonus(value);
@@ -41,6 +42,7 @@ namespace Pacman.Model
 		}
 		
 		private float frighteningTime = 0;
+		private bool isPause = false;
 		
 		private GameData gameData = GameData.gameData;
 		private GameController gameController = GameController.gameController;
@@ -118,13 +120,14 @@ namespace Pacman.Model
 		private void EnterEnemies(int currentDotCount)
 		{
 			var unitDefs = gameData.defs.units;
-			var units = gameData.state.mazes[gameController.CurrentMaze].units.Keys;
+			var units = gameData.state.mazes[gameController.CurrentMaze].units;
 			
-			foreach (var unitID in units)
+			foreach (var unit in units)
 			{
-				if (unitDefs[unitID].entryDotCount == currentDotCount)
+				if (unitDefs[unit.Key].entryDotCount == currentDotCount &&
+					unit.Value.position.Equals(gameData.defs.mazes[gameController.CurrentMaze].units[unit.Key].position))
 				{
-					var enemy = enemies.Find(x => x.UnitId == unitID);
+					var enemy = enemies.Find(x => x.UnitId == unit.Key);
 					if (enemy != null)
 						enemy.StartMove();
 				}
@@ -137,14 +140,14 @@ namespace Pacman.Model
 		private void MoveEnteredEnemies(int currentDotCount)
 		{
 			var unitDefs = gameData.defs.units;
-			var units = gameData.state.mazes[gameController.CurrentMaze].units.Keys;
+			var units = gameData.state.mazes[gameController.CurrentMaze].units;
 			
-			foreach (var unitID in units)
+			foreach (var unit in units)
 			{
-				if (currentDotCount > unitDefs[unitID].entryDotCount ||
-					currentDotCount == unitDefs[unitID].entryDotCount && currentDotCount > 0)
+				if (currentDotCount >= unitDefs[unit.Key].entryDotCount &&
+					!unit.Value.position.Equals(gameData.defs.mazes[gameController.CurrentMaze].units[unit.Key].position))
 				{
-					var enemy = enemies.Find(x => x.UnitId == unitID);
+					var enemy = enemies.Find(x => x.UnitId == unit.Key);
 					if (enemy != null)
 						enemy.Move();
 				}
@@ -172,8 +175,31 @@ namespace Pacman.Model
 			}
 		}
 		
+		public void Pause()
+		{
+			isPause = true;
+			
+			foreach (UnitModel enemy in enemies)
+				enemy.Pause();
+			
+			pacman.Pause();
+		}
+		
+		public void Resume()
+		{
+			isPause = false;
+			
+			foreach (UnitModel enemy in enemies)
+				enemy.Resume();
+			
+			pacman.Resume();
+		}
+		
 		public void FixedUpdate()
 		{
+			if (isPause)
+				return;
+			
 			if (UnitsBehaviorMode == UnitBehaviorMode.frightening)
 			{
 				frighteningTime -= Time.deltaTime;

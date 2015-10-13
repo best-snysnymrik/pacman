@@ -40,7 +40,8 @@ namespace Tests
 			gameData.OnDataInitialized += DataInitialized;
 			
 			EntryPoint entry = GameObject.FindObjectOfType<EntryPoint>();
-			gameData.InitData(entry, true);
+			gameData.Init(entry, true);
+			gameData.LoadData();
 			
 			InitUnits();
 		}

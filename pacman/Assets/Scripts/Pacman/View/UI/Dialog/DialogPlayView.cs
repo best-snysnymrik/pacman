@@ -31,5 +31,10 @@ namespace Pacman.View.UI.Dialog
 			newGameButton.onClick.RemoveAllListeners();
 			continueGameButton.onClick.RemoveAllListeners();
 		}
+		
+		public void HideContinueGameButton()
+		{
+			continueGameButton.gameObject.SetActive(false);
+		}
 	}
 }

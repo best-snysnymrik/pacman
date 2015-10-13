@@ -27,11 +27,13 @@ namespace Pacman.View.UI.Dialog
 		
 		private void ExitPressed()
 		{
+			gameController.SaveGame();
 			gameController.ShowMainMenu();
 		}
 		
 		private void ContinuePressed()
 		{
+			gameController.Resume();
 			guiManager.CloseDialog(gameObject);
 		}
 	}

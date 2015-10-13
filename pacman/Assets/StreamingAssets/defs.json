@@ -205,6 +205,9 @@
 		],
 		"accessTime": 10
 	},
+	"commonValues": {
+		"livesCount": 3
+	},
 	"levels": [
 		{
 			"enemyBehavior": {

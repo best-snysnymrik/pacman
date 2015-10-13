@@ -10,14 +10,20 @@ namespace Pacman.View.Units
 		public delegate void CompleteMoveHandler();
 		public event CompleteMoveHandler OnCompleteMove;
 		
-		private Dictionary<Direction, float> angles = new Dictionary<Direction, float>();
+		private Dictionary<Direction, float> angles = new Dictionary<Direction, float>()
+		{
+			{Direction.left, -90},
+			{Direction.right, 90},
+			{Direction.up, 0},
+			{Direction.down, 180}
+		};
 		
 		void Awake()
+		{}
+		
+		void OnDestroy()
 		{
-			angles[Direction.left] = -90;
-			angles[Direction.right] = 90;
-			angles[Direction.up] = 0;
-			angles[Direction.down] = 180;
+			iTween.tweens.Clear();
 		}
 		
 		public void SetMaterial(string materialName)
@@ -98,6 +104,16 @@ namespace Pacman.View.Units
 		private void CompleteMove()
 		{
 			OnCompleteMove();
+		}
+		
+		public void Pause()
+		{
+			iTween.Pause();
+		}
+		
+		public void Resume()
+		{
+			iTween.Resume();
 		}
 	}
 	

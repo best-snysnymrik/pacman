@@ -15,7 +15,8 @@ namespace Pacman
 		{
 			gameData.OnDataInitialized += DataInitialized;
 			
-			gameData.InitData(this);
+			gameData.Init(this);
+			gameData.LoadData();
 		}
 		
 		void OnDestroy()

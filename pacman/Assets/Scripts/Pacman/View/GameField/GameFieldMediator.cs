@@ -26,7 +26,10 @@ namespace Pacman.View.GameField
 		{
 			gameModel = new GameModel();
 			mazeModel = new MazeModel();
-						
+			
+			gameController.OnPause += gameModel.Pause;
+			gameController.OnResume += gameModel.Resume;
+			
 			CreateMaze();
 			CreateUnits();
 			
@@ -113,6 +116,9 @@ namespace Pacman.View.GameField
 		private void OnDestroy()
 		{
 			SetCameraPosition(-cameraOffset);
+			
+			gameController.OnPause -= gameModel.Pause;
+			gameController.OnResume -= gameModel.Resume;
 		}
 	}
 }

@@ -18,6 +18,9 @@ namespace Pacman.View.UI.Dialog
 			view.OnClosePressed += Close;
 			view.OnNewGamePressed += NewGame;
 			view.OnContinueGamePressed += ContinueGame;
+			
+			if (!gameController.IsSavedGameExist())
+				view.HideContinueGameButton();
 		}
 		
 		void OnDestroy()
@@ -34,12 +37,12 @@ namespace Pacman.View.UI.Dialog
 		
 		private void NewGame()
 		{
-			guiManager.ShowDialog(DialogType.Settings);
+			gameController.StartNewGame();
 		}
 		
 		private void ContinueGame()
 		{
-			gameController.StartGame();
+			gameController.ContinueGame();
 		}
 	}
 }

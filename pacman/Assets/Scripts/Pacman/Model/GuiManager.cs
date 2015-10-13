@@ -8,7 +8,6 @@ namespace Pacman.Model
 	public enum DialogType
 	{
 		Play,
-		Settings,
 		Pause
 	}
 	

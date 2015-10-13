@@ -54,5 +54,15 @@ namespace Pacman.View.Units
 		{
 			view.MoveToStart(position, model.Speed);
 		}
+		
+		public void Pause()
+		{
+			view.Pause();
+		}
+		
+		public void Resume()
+		{
+			view.Resume();
+		}
 	}
 }

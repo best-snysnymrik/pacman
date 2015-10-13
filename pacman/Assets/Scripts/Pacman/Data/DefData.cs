@@ -9,6 +9,7 @@ namespace Pacman.Data
 		public Dictionary<string, UnitDef> units;
 		public Dictionary<string, MazeElementDef> mazeElements;
 		public BonusesDef bonuses;
+		public CommonValues commonValues;
 		public List<LevelDef> levels;
 	}
 	
@@ -93,5 +94,10 @@ namespace Pacman.Data
 	{
 		public string type;
 		public int scores;
+	}
+	
+	public class CommonValues
+	{
+		public int livesCount;
 	}
 }

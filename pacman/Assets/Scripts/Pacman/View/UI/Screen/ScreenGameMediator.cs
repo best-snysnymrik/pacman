@@ -10,6 +10,7 @@ namespace Pacman.View.UI.Screen
 		[SerializeField]
 		private ScreenGameView view;
 		
+		private GameController gameController = GameController.gameController;
 		private GuiManager guiManager = GuiManager.guiManager;
 		
 		void Awake()
@@ -24,6 +25,7 @@ namespace Pacman.View.UI.Screen
 		
 		private void PausePressed()
 		{
+			gameController.Pause();
 			guiManager.ShowDialog(DialogType.Pause);
 		}
 	}

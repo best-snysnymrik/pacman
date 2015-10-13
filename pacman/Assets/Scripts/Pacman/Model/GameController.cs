@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+using Pacman.Data;
 using Pacman.View.Scene;
 
 namespace Pacman.Model
@@ -24,6 +25,13 @@ namespace Pacman.Model
 		}
 		
 		private SceneView view;
+		
+		public delegate void GameActivityStateChangedHandler();
+		public event GameActivityStateChangedHandler OnPause;
+		public event GameActivityStateChangedHandler OnResume;
+		
+		private GameData gameData = GameData.gameData;
+		
 		
 		public void SetSceneView(SceneView view)
 		{
@@ -54,14 +62,40 @@ namespace Pacman.Model
 			view.ShowScene(condition);
 		}
 		
-		public void StartGame()
+		public void ShowMainMenu()
+		{
+			Condition = GameCondition.MainMenu;
+		}
+		
+		public void StartNewGame()
+		{
+			gameData.CreateNewMaze(CurrentMaze);
+			Condition = GameCondition.Game;			
+		}
+		
+		public void SaveGame()
+		{
+			gameData.SaveStateData();
+		}
+		
+		public void ContinueGame()
 		{
 			Condition = GameCondition.Game;			
 		}
 		
-		public void ShowMainMenu()
+		public bool IsSavedGameExist()
 		{
-			Condition = GameCondition.MainMenu;
+			return gameData.state.mazes.ContainsKey(CurrentMaze);
+		}
+		
+		public void Pause()
+		{
+			OnPause();
+		}
+		
+		public void Resume()
+		{
+			OnResume();
 		}
 	}
 }
