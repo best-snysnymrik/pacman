@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using Pacman.Model;
+using Pacman.View.Units.Behavior;
 
 namespace Pacman.View.Units
 {
@@ -9,6 +10,11 @@ namespace Pacman.View.Units
 	{
 		public delegate void CompleteMoveHandler();
 		public event CompleteMoveHandler OnCompleteMove;
+		
+		public delegate void CollisionDetectedHandler(string otherUnitId);
+		public event CollisionDetectedHandler OnCollisionDetected;
+		
+		private FrighteningBehavior frighteningBehavior;
 		
 		private Dictionary<Direction, float> angles = new Dictionary<Direction, float>()
 		{
@@ -29,6 +35,24 @@ namespace Pacman.View.Units
 		public void SetMaterial(string materialName)
 		{
 			renderer.material = Resources.Load(materialName, typeof(Material)) as Material;
+		}
+		
+		public void AddFrighteningBehavior()
+		{
+			frighteningBehavior = gameObject.AddComponent<FrighteningBehavior>();
+			frighteningBehavior.SaveNormalColor();
+		}
+		
+		public void SetFrighteningBehavior(float time)
+		{
+			if (frighteningBehavior != null)
+				frighteningBehavior.StartFrighteningBehavior(time);
+		}
+		
+		public void StopFrighteningBehavior()
+		{
+			if (frighteningBehavior != null)
+				frighteningBehavior.StopFrighteningBehavior();
 		}
 		
 		public void RotateTo(Direction direction)
@@ -106,14 +130,14 @@ namespace Pacman.View.Units
 			OnCompleteMove();
 		}
 		
-		public void Pause()
+		public void Stop()
 		{
-			iTween.Pause();
+			iTween.Stop(gameObject);
 		}
 		
-		public void Resume()
+		private void OnTriggerEnter(Collider other)
 		{
-			iTween.Resume();
+			OnCollisionDetected(other.gameObject.GetComponent<UnitMediator>().GetUnitId());
 		}
 	}
 	

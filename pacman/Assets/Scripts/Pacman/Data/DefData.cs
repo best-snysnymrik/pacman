@@ -40,6 +40,7 @@ namespace Pacman.Data
 		public int columns;
 		public int rows;
 		public List<int> elements;
+		public int dotCount;
 		public Point enemyStartPoint;
 		public Point bonusPoint;
 	}
@@ -47,6 +48,7 @@ namespace Pacman.Data
 	public class MazeElementDef
 	{
 		public string prefab;
+		public int scores;
 	}
 	
 	public class BonusesDef
@@ -99,5 +101,6 @@ namespace Pacman.Data
 	public class CommonValues
 	{
 		public int livesCount;
+		public int enemyCatchScores;
 	}
 }

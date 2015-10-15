@@ -38,13 +38,14 @@
 					6, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
 					6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6
 				],
+				"dotCount": 244,
 				"enemyStartPoint": {"x": 11, "y": 13},
 				"bonusPoint": {"x": 23, "y": 13}
 			},
 			"units": {
 				"Pacman": {
-					"position": {"x": 11, "y": 10},
-					"direction": 2
+					"position": {"x": 23, "y": 13},
+					"direction": 3
 				},
 				"Blinky": {
 					"position": {"x": 11, "y": 13},
@@ -106,6 +107,7 @@
 					6, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
 					6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6
 				],
+				"dotCount": 244,
 				"enemyStartPoint": {"x": 11, "y": 13},
 				"bonusPoint": {"x": 23, "y": 13}
 			},
@@ -174,10 +176,12 @@
 			"prefab": "GameElements/Prefabs/Maze/elements/floor"
 		},
 		"2": {
-			"prefab": "GameElements/Prefabs/Maze/elements/dot"
+			"prefab": "GameElements/Prefabs/Maze/elements/dot",
+			"scores": 10
 		},
 		"3": {
-			"prefab": "GameElements/Prefabs/Maze/elements/energizer"
+			"prefab": "GameElements/Prefabs/Maze/elements/energizer",
+			"scores": 50
 		},
 		"4": {
 			"prefab": "GameElements/Prefabs/Maze/elements/floor"
@@ -206,7 +210,8 @@
 		"accessTime": 10
 	},
 	"commonValues": {
-		"livesCount": 3
+		"livesCount": 3,
+		"enemyCatchScores": 200
 	},
 	"levels": [
 		{

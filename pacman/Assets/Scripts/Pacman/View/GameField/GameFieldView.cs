@@ -10,11 +10,13 @@ namespace Pacman.View.GameField
 		[SerializeField]
 		private GameObject unitsContainer;
 		
-		public void CreateMazeElement(string prefabName, Vector2 xzPosition)
+		public GameObject CreateMazeElement(string prefabName, Vector2 xzPosition)
 		{
 			var instance = Instantiate(Resources.Load(prefabName, typeof(GameObject))) as GameObject;
 			instance.transform.SetParent(elementsContainer.transform);			
 			instance.transform.position = new Vector3(xzPosition.x, instance.transform.position.y, xzPosition.y);
+			
+			return instance;
 		}
 		
 		public GameObject CreateUnit(string prefabName, Vector2 xzPosition)

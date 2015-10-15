@@ -11,6 +11,9 @@ namespace Pacman.Model.Unit
 		protected Vector2 scatterPosition;		
 		protected UnitPosition pacmanPosition;
 		
+		public delegate void EnemyCatchedHandler();
+		public event EnemyCatchedHandler OnEnemyCatched;
+		
 		private EnemyBehaviorMode enemyBehaviorMode = EnemyBehaviorMode.chase;
 		public EnemyBehaviorMode EnemyBehaviorMode 
 		{ 
@@ -52,6 +55,18 @@ namespace Pacman.Model.Unit
 			var scatterPoint = gameData.defs.mazes[gameController.CurrentMaze].units[UnitId].scatterPoint;
 			scatterPosition = new Vector2(scatterPoint.x, scatterPoint.y);
 		}
+		
+		public void SetFrighteningBehavior(float time)
+		{
+			try
+			{
+				mediator.SetFrighteningBehavior(time);
+			}
+			catch (NullReferenceException e)
+			{
+				Debug.LogException(e);
+			}
+		}
 
 		#region IObserver implementation
 		public virtual void Subscribe(IObservable<UnitInfo> provider)
@@ -76,6 +91,8 @@ namespace Pacman.Model.Unit
 		
 		public override void StartMove()
 		{
+			// TODO: надо придумать решение выхода посимпатичнее
+			
 			// сначала выводим привидение из "дома"
 			CurrentPosition.point = maze.EnemyStartPosition;
 			UpdatePosition();
@@ -96,7 +113,7 @@ namespace Pacman.Model.Unit
 		}
 		
 		public override UnitPosition GetNextMovePoint()
-		{
+		{		
 			CheckIsPortMovement();
 			
 			switch (UnitBehaviorMode)
@@ -183,6 +200,28 @@ namespace Pacman.Model.Unit
 		protected virtual Vector2 GetChasePoint()
 		{
 			return pacmanPosition.point;
+		}
+		
+		public override void Catch()
+		{
+			OnEnemyCatched();
+			base.Catch();
+			
+			StopFrightening();
+		}
+		
+		private void StopFrightening()
+		{
+			UnitBehaviorMode = UnitBehaviorMode.normal;
+			
+			try
+			{
+				mediator.StopFrighteningBehavior();
+			}
+			catch (NullReferenceException e)
+			{
+				Debug.LogException(e);
+			}
 		}
 		
 		private void Shuffle<T>(List<T> list)  

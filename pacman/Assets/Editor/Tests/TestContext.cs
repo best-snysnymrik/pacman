@@ -7,20 +7,7 @@ using Pacman.Model;
 using Pacman.Model.Unit;
 
 namespace Tests
-{		
-	public class FakePacmanModel : PacmanModel
-	{
-		public FakePacmanModel()
-		{
-			base.Init();
-		}
-		
-		public void SetCurrentPosition(UnitPosition position)
-		{
-			CurrentPosition = position;
-		}
-	}
-	
+{
 	public class TestContext
 	{
 		public GameData gameData = GameData.gameData;
@@ -48,7 +35,7 @@ namespace Tests
 		
 		private void InitUnits()
 		{
-			gameController.CurrentMaze = "0";
+			gameController.CurrentMaze = "0";			
 			gameData.state.mazes[gameController.CurrentMaze].level = 0;
 			
 			gameModel = new GameModel();

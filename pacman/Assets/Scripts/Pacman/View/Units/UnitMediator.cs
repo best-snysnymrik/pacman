@@ -2,6 +2,7 @@
 using System.Collections;
 
 using Pacman.Data;
+using Pacman.Model;
 using Pacman.Model.Unit;
 
 namespace Pacman.View.Units
@@ -18,11 +19,13 @@ namespace Pacman.View.Units
 		void Awake()
 		{
 			view.OnCompleteMove += Move;
+			view.OnCollisionDetected += CollisionDetected;
 		}
 		
 		void OnDestroy()
 		{
 			view.OnCompleteMove -= Move;
+			view.OnCollisionDetected += CollisionDetected;
 		}
 		
 		public void SetUnitModel(UnitModel model)
@@ -30,6 +33,24 @@ namespace Pacman.View.Units
 			this.model = model;
 			
 			SetMaterial();
+			
+			if (model.UnitId != UnitDefId.Pacman)
+				view.AddFrighteningBehavior();				
+		}
+		
+		public string GetUnitId()
+		{
+			return model.UnitId;
+		}
+		
+		public void SetFrighteningBehavior(float time)
+		{
+			view.SetFrighteningBehavior(time);
+		}
+		
+		public void StopFrighteningBehavior()
+		{
+			view.StopFrighteningBehavior();
 		}
 		
 		private void SetMaterial()
@@ -55,14 +76,25 @@ namespace Pacman.View.Units
 			view.MoveToStart(position, model.Speed);
 		}
 		
-		public void Pause()
+		public void Stop()
 		{
-			view.Pause();
+			view.Stop();
 		}
 		
-		public void Resume()
+		private void CollisionDetected(string otherUnitId)
 		{
-			view.Resume();
+			if (model.UnitBehaviorMode == UnitBehaviorMode.normal)
+			{
+				// пакмана заловили
+				if (model.UnitId == UnitDefId.Pacman)
+					model.Catch();				
+			}
+			else
+			{
+				// режим "боязни", пакман заловил привидение
+				if (otherUnitId == UnitDefId.Pacman)
+					model.Catch();
+			}
 		}
 	}
 }

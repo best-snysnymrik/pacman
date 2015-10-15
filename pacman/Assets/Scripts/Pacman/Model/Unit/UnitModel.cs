@@ -126,30 +126,6 @@ namespace Pacman.Model.Unit
 			}			
 		}
 		
-		public void Pause()
-		{
-			try
-			{
-				mediator.Pause();
-			}
-			catch (NullReferenceException e)
-			{
-				Debug.LogException(e);
-			}
-		}
-		
-		public void Resume()
-		{
-			try
-			{
-				mediator.Resume();
-			}
-			catch (NullReferenceException e)
-			{
-				Debug.LogException(e);
-			}
-		}
-		
 		public virtual UnitPosition GetNextMovePoint()
 		{
 			return CurrentPosition;
@@ -161,7 +137,7 @@ namespace Pacman.Model.Unit
 		/// </summary>
 		protected void CheckIsPortMovement()
 		{
-			if (!maze.IsPortPoint(CurrentPosition.point))
+			if (!maze.IsPointOfType(CurrentPosition.point, MazeElementDefId.port))
 				return;
 			
 			// переносим юнит на другой край лабиринта
@@ -178,6 +154,39 @@ namespace Pacman.Model.Unit
 			try
 			{
 				mediator.SetToPoint(point);
+			}
+			catch (NullReferenceException e)
+			{
+				Debug.LogException(e);
+			}
+		}
+		
+		public virtual void Catch()
+		{
+			SetUnitToStartPoint();
+		}
+		
+		private void SetUnitToStartPoint()
+		{
+			Stop();
+			
+			var startPoint = gameData.defs.mazes[gameController.CurrentMaze].units[UnitId].position;
+			var startPosition = new Vector2(startPoint.x, startPoint.y);
+			
+			var startDirection = gameData.defs.mazes[gameController.CurrentMaze].units[UnitId].direction;
+			
+			CurrentPosition = new UnitPosition(startPosition, (Direction)startDirection);
+			
+			SetUnitToPoint(startPosition);
+			
+			StartMove();
+		}
+		
+		private void Stop()
+		{
+			try
+			{
+				mediator.Stop();
 			}
 			catch (NullReferenceException e)
 			{

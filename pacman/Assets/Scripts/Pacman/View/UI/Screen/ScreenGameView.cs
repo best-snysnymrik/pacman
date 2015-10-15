@@ -8,6 +8,8 @@ namespace Pacman.View.UI.Screen
 	{
 		[SerializeField]
 		private Button pauseButton;
+		[SerializeField]
+		private Text scores;
 		
 		public delegate void PausePressedHandler();
 		public event PausePressedHandler OnPausePressed;
@@ -20,6 +22,11 @@ namespace Pacman.View.UI.Screen
 		void OnDestroy()
 		{
 			pauseButton.onClick.RemoveAllListeners();
+		}
+		
+		public void SetScoresCount(int scoresCount)
+		{
+			scores.text = scoresCount.ToString();
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 using Pacman.Model;
@@ -42,7 +42,7 @@ namespace Pacman.View.UI.Dialog
 		
 		private void ContinueGame()
 		{
-			gameController.ContinueGame();
+			gameController.StartSavedGame();
 		}
 	}
 }

@@ -12,24 +12,6 @@ namespace Pacman.Model
 		private UnitModel pacman;
 		private List<UnitModel> enemies = new List<UnitModel>();
 		
-		public int Level { get; private set; }
-		public int Scores { get; private set; }
-		public int Lives { get; private set; }
-		
-		private int dotCount = 0;
-		public int DotCount 
-		{ 
-			get { return dotCount; } 
-			set
-			{
-				dotCount = value;
-				gameData.state.mazes[gameController.CurrentMaze].dots = dotCount;
-				
-				EnterEnemies(value);
-				DropBonus(value);
-			}
-		}
-		
 		private UnitBehaviorMode unitsBehaviorMode = UnitBehaviorMode.normal;
 		public UnitBehaviorMode UnitsBehaviorMode 
 		{ 
@@ -42,6 +24,8 @@ namespace Pacman.Model
 		}
 		
 		private float frighteningTime = 0;
+		private int catchedFrightenedEnemyCount = 0;
+		
 		private bool isPause = false;
 		
 		private GameData gameData = GameData.gameData;
@@ -49,14 +33,37 @@ namespace Pacman.Model
 		
 		private Queue<EnemyBehaviorPeriodDef> enemyBehaviorPeriods = new Queue<EnemyBehaviorPeriodDef>();
 		private EnemyBehaviorPeriodDef currentEnemyBehaviorPeriod; 
-
+		
+		private MazeModel maze;
+		private int dotCount = 0;
 		
 		public GameModel()
+		{}
+		
+		public void SetMazeModel(MazeModel maze)
 		{
-			Level = gameData.state.mazes[gameController.CurrentMaze].level;
-			Scores = gameData.state.mazes[gameController.CurrentMaze].scores;
-			Lives = gameData.state.mazes[gameController.CurrentMaze].lives;
-			DotCount = gameData.state.mazes[gameController.CurrentMaze].dots;
+			this.maze = maze;			
+			
+			dotCount = maze.DotCount;
+			maze.OnDotCountChanged += DotCountChanged;
+			maze.OnEnergizerCollected += SetFrighteningBehaviorMode;
+		}
+		
+		public void OnDestroy()
+		{
+			maze.OnDotCountChanged -= DotCountChanged;
+			maze.OnEnergizerCollected -= SetFrighteningBehaviorMode;
+			
+			foreach (var enemy in enemies)
+				((EnemyModel)enemy).OnEnemyCatched -= EnemyCatched;
+		}
+		
+		private void DotCountChanged(int count)
+		{
+			dotCount = count;
+			
+			EnterEnemies(dotCount);
+			DropBonus(dotCount);
 		}
 		
 		public void AddUnit(UnitModel unit)
@@ -64,7 +71,10 @@ namespace Pacman.Model
 			if (unit.UnitId == UnitDefId.Pacman)
 				pacman = unit;
 			else
+			{
 				enemies.Add(unit);
+				((EnemyModel)unit).OnEnemyCatched += EnemyCatched;
+			}
 		}
 		
 		public void StartGame()
@@ -73,8 +83,8 @@ namespace Pacman.Model
 			
 			StartEnemyBehaviorPeriods();
 			
-			MoveEnteredEnemies(DotCount);
-			EnterEnemies(DotCount);
+			MoveEnteredEnemies(dotCount);
+			EnterEnemies(dotCount);
 			
 			pacman.StartMove();
 		}
@@ -95,8 +105,13 @@ namespace Pacman.Model
 		
 		public void SetFrighteningBehaviorMode()
 		{
-			frighteningTime = gameData.defs.levels[Level].enemyBehavior.frighteningTime;
+			catchedFrightenedEnemyCount = 0;
+			
+			frighteningTime = gameData.defs.levels[gameController.Level].enemyBehavior.frighteningTime;
 			UnitsBehaviorMode = UnitBehaviorMode.frightening;
+			
+			foreach (EnemyModel enemy in enemies)
+				enemy.SetFrighteningBehavior(frighteningTime);
 		}
 		
 		private void SetUnitsBehaviorMode(UnitBehaviorMode mode)
@@ -144,7 +159,7 @@ namespace Pacman.Model
 			
 			foreach (var unit in units)
 			{
-				if (currentDotCount >= unitDefs[unit.Key].entryDotCount &&
+				if (unit.Key == UnitDefId.Blinky || currentDotCount >= unitDefs[unit.Key].entryDotCount &&
 					!unit.Value.position.Equals(gameData.defs.mazes[gameController.CurrentMaze].units[unit.Key].position))
 				{
 					var enemy = enemies.Find(x => x.UnitId == unit.Key);
@@ -158,9 +173,15 @@ namespace Pacman.Model
 		{
 		}
 		
+		private void EnemyCatched()
+		{
+			gameController.EnemyCatched(catchedFrightenedEnemyCount);
+			catchedFrightenedEnemyCount++;
+		}
+		
 		private void StartEnemyBehaviorPeriods()
 		{
-			enemyBehaviorPeriods = new Queue<EnemyBehaviorPeriodDef>(gameData.defs.levels[Level].enemyBehavior.periods);			
+			enemyBehaviorPeriods = new Queue<EnemyBehaviorPeriodDef>(gameData.defs.levels[gameController.Level].enemyBehavior.periods);			
 			ApplyNextEnemyBehaviorMode();
 		}
 		
@@ -179,20 +200,14 @@ namespace Pacman.Model
 		{
 			isPause = true;
 			
-			foreach (UnitModel enemy in enemies)
-				enemy.Pause();
-			
-			pacman.Pause();
+			iTween.Pause();
 		}
 		
 		public void Resume()
 		{
 			isPause = false;
 			
-			foreach (UnitModel enemy in enemies)
-				enemy.Resume();
-			
-			pacman.Resume();
+			iTween.Resume();
 		}
 		
 		public void FixedUpdate()

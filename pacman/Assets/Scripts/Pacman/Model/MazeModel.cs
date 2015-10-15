@@ -22,6 +22,33 @@ namespace Pacman.Model
 		private GameData gameData = GameData.gameData;
 		private GameController gameController = GameController.gameController;
 		
+		public delegate void DotCollectedHandler(Vector2 point);
+		public event DotCollectedHandler OnDotCollected;
+		
+		public delegate void DotCountChangedHandler(int count);
+		public event DotCountChangedHandler OnDotCountChanged;
+		
+		public delegate void EnergizerCollectedHandler();
+		public event EnergizerCollectedHandler OnEnergizerCollected;
+		
+		private int allDotCount;
+		private int dotCount = 0;
+		public int DotCount 
+		{ 
+			get { return dotCount; } 
+			set
+			{
+				dotCount = value;
+				gameData.state.mazes[gameController.CurrentMaze].dots = dotCount;
+				
+				if (OnDotCountChanged != null)
+					OnDotCountChanged(value);
+				
+				if (dotCount == allDotCount)
+					Debug.Log("win");
+			}
+		}
+		
 		public List<int> Elements { get; private set; }
 		public int Cols { get; private set; }
 		public int Rows { get; private set; }
@@ -45,6 +72,9 @@ namespace Pacman.Model
 			BonusPosition = new Vector2(bonusPoint.x, bonusPoint.y);
 			
 			Units = gameData.state.mazes[gameController.CurrentMaze].units;
+			
+			allDotCount = gameData.defs.mazes[gameController.CurrentMaze].view.dotCount;
+			DotCount = gameData.state.mazes[gameController.CurrentMaze].dots;			
 		}
 		
 		public bool StepIsPossible(Vector2 point, Direction stepDirection)
@@ -65,15 +95,34 @@ namespace Pacman.Model
 			
 			return false;
 		}
-		
-		public bool IsPortPoint(Vector2 point)
+				
+		public bool IsPointOfType(Vector2 point, MazeElementDefId elementDefId)
 		{
 			int index = (int)(point.x * Cols + point.y);
 			
-			if (Elements[index] == (int)MazeElementDefId.port)
+			if (Elements[index] == (int)elementDefId)
 				return true;
 			
 			return false;
+		}
+				
+		public void CollectDot(Vector2 point, MazeElementDefId dotType)
+		{
+			if (!IsPointOfType(point, dotType))
+				return;
+			
+			DotCount += 1;
+			
+			gameController.CollectDot(dotType);
+			
+			int index = (int)(point.x * Cols + point.y);			
+			Elements[index] = (int)MazeElementDefId.floor;
+			
+			if (OnDotCollected != null)
+				OnDotCollected(point);
+			
+			if (dotType == MazeElementDefId.energizer && OnEnergizerCollected != null)
+				OnEnergizerCollected();	
 		}
 	}
 }

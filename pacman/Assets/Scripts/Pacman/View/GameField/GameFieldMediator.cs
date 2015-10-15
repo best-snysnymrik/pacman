@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 using Pacman.Data;
 using Pacman.Model;
@@ -22,13 +22,21 @@ namespace Pacman.View.GameField
 		
 		private Vector3 cameraOffset = Vector3.zero;
 		
+		private Dictionary<int, GameObject> dots = new Dictionary<int, GameObject>();
+		
 		private void Awake()
 		{
 			gameModel = new GameModel();
 			mazeModel = new MazeModel();
 			
+			gameModel.SetMazeModel(mazeModel);
+			
 			gameController.OnPause += gameModel.Pause;
 			gameController.OnResume += gameModel.Resume;
+			
+			gameController.OnLivesChanged += LivesCountChanged;
+			
+			mazeModel.OnDotCollected += DotCollected;
 			
 			CreateMaze();
 			CreateUnits();
@@ -36,6 +44,20 @@ namespace Pacman.View.GameField
 			SetUpCamera();
 			
 			gameModel.StartGame();
+		}
+		
+		private void OnDestroy()
+		{
+			SetCameraPosition(-cameraOffset);
+			
+			gameController.OnPause -= gameModel.Pause;
+			gameController.OnResume -= gameModel.Resume;
+			
+			gameController.OnLivesChanged -= LivesCountChanged;
+			
+			mazeModel.OnDotCollected -= DotCollected;
+			
+			gameModel.OnDestroy();
 		}
 		
 		private void FixedUpdate()
@@ -60,7 +82,12 @@ namespace Pacman.View.GameField
 					view.CreateMazeElement(GetPrefabNameByMazeElementId((int)MazeElementDefId.floor), xzPosition);
 				
 				if (elementId > (int)MazeElementDefId.floor)
-					view.CreateMazeElement(GetPrefabNameByMazeElementId(elementId), xzPosition);
+				{
+					var element = view.CreateMazeElement(GetPrefabNameByMazeElementId(elementId), xzPosition);
+					
+					if (elementId == (int)MazeElementDefId.dot || elementId == (int)MazeElementDefId.energizer)
+						dots[i] = element;					
+				}
 			}
 		}
 		
@@ -113,12 +140,16 @@ namespace Pacman.View.GameField
 			view.SetCameraPosition(position);
 		}
 		
-		private void OnDestroy()
+		private void DotCollected(Vector2 point)
 		{
-			SetCameraPosition(-cameraOffset);
+			int index = (int)(point.x * mazeModel.Cols + point.y);
 			
-			gameController.OnPause -= gameModel.Pause;
-			gameController.OnResume -= gameModel.Resume;
+			if (dots.ContainsKey(index))
+				DestroyObject(dots[index]);
+		}
+		
+		private void LivesCountChanged(int count)
+		{
 		}
 	}
 }

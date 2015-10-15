@@ -4,7 +4,13 @@ using System.Collections.Generic;
 namespace Pacman.Model.Unit
 {
 	public class PacmanModel : UnitModel
-	{		
+	{
+		private List<MazeElementDefId> dotTypes = new List<MazeElementDefId>()
+		{
+			MazeElementDefId.dot,
+			MazeElementDefId.energizer
+		};
+		
 		public PacmanModel()
 		{
 			UnitId = UnitDefId.Pacman;
@@ -25,6 +31,7 @@ namespace Pacman.Model.Unit
 		
 		public override UnitPosition GetNextMovePoint()
 		{
+			CollectDot();
 			CheckIsPortMovement();
 			
 			var point = CurrentPosition.point;
@@ -39,6 +46,18 @@ namespace Pacman.Model.Unit
 			}
 			
 			return CurrentPosition;
+		}
+		
+		protected void CollectDot()
+		{
+			foreach (var dotType in dotTypes)
+				maze.CollectDot(CurrentPosition.point, dotType);
+		}
+		
+		public override void Catch()
+		{
+			gameController.PacmanCatched();
+			base.Catch();
 		}
 	}
 }

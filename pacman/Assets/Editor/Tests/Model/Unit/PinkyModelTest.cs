@@ -40,7 +40,7 @@ namespace Tests
 		[Test]
 		public void testGetPinkyChasePoint_PacmanInLeftDirection()
 		{
-			context.pacman.SetCurrentPosition(new UnitPosition(new Vector3(0, 10), Direction.left));			
+			context.pacman.SetCurrentPosition(new UnitPosition(new Vector2(0, 10), Direction.left));			
 			var result = context.pinky.GetPinkyChasePoint();
 			
 			Assert.AreEqual(new Vector2(0, 6), result);
@@ -49,7 +49,7 @@ namespace Tests
 		[Test]
 		public void testGetPinkyChasePoint_PacmanInDownDirection()
 		{
-			context.pacman.SetCurrentPosition(new UnitPosition(new Vector3(0, 12), Direction.down));			
+			context.pacman.SetCurrentPosition(new UnitPosition(new Vector2(0, 12), Direction.down));			
 			var result = context.pinky.GetPinkyChasePoint();
 			
 			Assert.AreEqual(new Vector2(4, 12), result);
@@ -58,7 +58,7 @@ namespace Tests
 		[Test]
 		public void testGetPinkyChasePoint_PacmanInRightDirection()
 		{
-			context.pacman.SetCurrentPosition(new UnitPosition(new Vector3(0, 27), Direction.right));			
+			context.pacman.SetCurrentPosition(new UnitPosition(new Vector2(0, 27), Direction.right));			
 			var result = context.pinky.GetPinkyChasePoint();
 			
 			Assert.AreEqual(new Vector2(0, 31), result);
@@ -67,7 +67,7 @@ namespace Tests
 		[Test]
 		public void testGetPinkyChasePoint_PacmanInUpDirection()
 		{
-			context.pacman.SetCurrentPosition(new UnitPosition(new Vector3(1, 0), Direction.up));			
+			context.pacman.SetCurrentPosition(new UnitPosition(new Vector2(1, 0), Direction.up));			
 			var result = context.pinky.GetPinkyChasePoint();
 			
 			Assert.AreEqual(new Vector2(-3, 0), result);

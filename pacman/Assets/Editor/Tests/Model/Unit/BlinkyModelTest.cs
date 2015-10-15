@@ -21,6 +21,11 @@ namespace Tests
 			CurrentPosition = position;
 		}
 		
+		public UnitPosition GetCurrentPosition()
+		{
+			return CurrentPosition;
+		}
+		
 		public Vector2 GetBlinkyChasePoint()
 		{
 			return base.GetChasePoint();
