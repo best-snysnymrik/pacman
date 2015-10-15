@@ -76,8 +76,12 @@
      <Compile Include="Assets\Scripts\Pacman\View\UI\Screen\ScreenMainView.cs" />
      <Compile Include="Assets\Scripts\Pacman\View\UI\Widget\WidgetMazeChooseButton.cs" />
      <Compile Include="Assets\Scripts\Pacman\View\Units\Behavior\FrighteningBehavior.cs" />
+     <Compile Include="Assets\Scripts\Pacman\View\Units\EnemyMediator.cs" />
+     <Compile Include="Assets\Scripts\Pacman\View\Units\EnemyView.cs" />
      <Compile Include="Assets\Scripts\Pacman\View\Units\Input\KeyboardInputController.cs" />
      <Compile Include="Assets\Scripts\Pacman\View\Units\Input\TouchInputController.cs" />
+     <Compile Include="Assets\Scripts\Pacman\View\Units\PacmanMediator.cs" />
+     <Compile Include="Assets\Scripts\Pacman\View\Units\PacmanView.cs" />
      <Compile Include="Assets\Scripts\Pacman\View\Units\UnitMediator.cs" />
      <Compile Include="Assets\Scripts\Pacman\View\Units\UnitView.cs" />
      <Compile Include="Assets\UnityTestTools\Assertions\AssertionComponent.cs" />

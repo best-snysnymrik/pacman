@@ -141,31 +141,31 @@
 	},
 	"units": {
 		"Pacman": {
-			"prefab": "GameElements/Prefabs/Units/unit",
+			"prefab": "GameElements/Prefabs/Units/pacman",
 			"material": "GameElements/Materials/Pacman",
 			"entryDotCount": 0,
 			"baseSpeed": 2
 		},
 		"Blinky": {
-			"prefab": "GameElements/Prefabs/Units/unit",
+			"prefab": "GameElements/Prefabs/Units/enemy",
 			"material": "GameElements/Materials/Blinky",
 			"entryDotCount": 0,			
 			"baseSpeed": 2
 		},
 		"Pinky": {
-			"prefab": "GameElements/Prefabs/Units/unit",
+			"prefab": "GameElements/Prefabs/Units/enemy",
 			"material": "GameElements/Materials/Pinky",
 			"entryDotCount": 0,
 			"baseSpeed": 2
 		},
 		"Inky": {
-			"prefab": "GameElements/Prefabs/Units/unit",
+			"prefab": "GameElements/Prefabs/Units/enemy",
 			"material": "GameElements/Materials/Inky",
 			"entryDotCount": 30,
 			"baseSpeed": 2
 		},
 		"Clyde": {
-			"prefab": "GameElements/Prefabs/Units/unit",
+			"prefab": "GameElements/Prefabs/Units/enemy",
 			"material": "GameElements/Materials/Clyde",
 			"entryDotCount": 90,
 			"baseSpeed": 2

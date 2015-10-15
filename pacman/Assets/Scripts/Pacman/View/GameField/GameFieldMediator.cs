@@ -115,18 +115,21 @@ namespace Pacman.View.GameField
 				gameModel.AddUnit(unitModel);
 				
 				if (unit.Key == UnitDefId.Pacman)
-				{
-					#if UNITY_EDITOR || UNITY_WEBPLAYER
-					var inputController = gameObject.AddComponent<KeyboardInputController>();
-					inputController.SetModel((PacmanModel)unitModel);
-					#endif
-					
-					#if (UNITY_ANDROID || UNITY_IPHONE) && !UNITY_EDITOR
-					var inputController = gameObject.AddComponent<TouchInputController>();
-					inputController.SetModel((PacmanModel)unitModel);
-					#endif
-				}
+					AddInputController((PacmanModel)unitModel);
 			}
+		}
+		
+		private void AddInputController(PacmanModel model)
+		{
+			#if UNITY_EDITOR || UNITY_WEBPLAYER
+			var inputController = gameObject.AddComponent<KeyboardInputController>();
+			inputController.SetModel(model);
+			#endif
+			
+			#if (UNITY_ANDROID || UNITY_IPHONE) && !UNITY_EDITOR
+			var inputController = gameObject.AddComponent<TouchInputController>();
+			inputController.SetModel(model);
+			#endif
 		}
 		
 		private void SetUpCamera()

@@ -104,7 +104,7 @@ namespace Pacman.Data
 			newMaze.dots = 0;
 			newMaze.lives = defs.commonValues.livesCount;
 			
-			newMaze.elements = defs.mazes[mazeId].view.elements;
+			newMaze.elements = new List<int>(defs.mazes[mazeId].view.elements);
 			
 			newMaze.units = new Dictionary<string, UnitPoint>();
 			var unitsDef = defs.mazes[mazeId].units;

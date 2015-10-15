@@ -14,8 +14,6 @@ namespace Pacman.View.Units
 		public delegate void CollisionDetectedHandler(string otherUnitId);
 		public event CollisionDetectedHandler OnCollisionDetected;
 		
-		private FrighteningBehavior frighteningBehavior;
-		
 		private Dictionary<Direction, float> angles = new Dictionary<Direction, float>()
 		{
 			{Direction.left, -90},
@@ -35,24 +33,6 @@ namespace Pacman.View.Units
 		public void SetMaterial(string materialName)
 		{
 			renderer.material = Resources.Load(materialName, typeof(Material)) as Material;
-		}
-		
-		public void AddFrighteningBehavior()
-		{
-			frighteningBehavior = gameObject.AddComponent<FrighteningBehavior>();
-			frighteningBehavior.SaveNormalColor();
-		}
-		
-		public void SetFrighteningBehavior(float time)
-		{
-			if (frighteningBehavior != null)
-				frighteningBehavior.StartFrighteningBehavior(time);
-		}
-		
-		public void StopFrighteningBehavior()
-		{
-			if (frighteningBehavior != null)
-				frighteningBehavior.StopFrighteningBehavior();
 		}
 		
 		public void RotateTo(Direction direction)

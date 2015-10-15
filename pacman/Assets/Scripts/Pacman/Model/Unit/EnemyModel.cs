@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 
+using Pacman.View.Units;
 using Common;
 
 namespace Pacman.Model.Unit
@@ -60,7 +61,7 @@ namespace Pacman.Model.Unit
 		{
 			try
 			{
-				mediator.SetFrighteningBehavior(time);
+				((EnemyMediator)mediator).SetFrighteningBehavior(time);
 			}
 			catch (NullReferenceException e)
 			{
@@ -216,7 +217,7 @@ namespace Pacman.Model.Unit
 			
 			try
 			{
-				mediator.StopFrighteningBehavior();
+				((EnemyMediator)mediator).StopFrighteningBehavior();
 			}
 			catch (NullReferenceException e)
 			{
