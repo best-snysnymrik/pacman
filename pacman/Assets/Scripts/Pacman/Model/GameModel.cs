@@ -12,6 +12,12 @@ namespace Pacman.Model
 		private UnitModel pacman;
 		private List<UnitModel> enemies = new List<UnitModel>();
 		
+		public delegate void BonusDroppedHandler(string bonusType);
+		public event BonusDroppedHandler OnBonusDropped;
+		
+		public delegate void BonusRemovedHandler();
+		public event BonusRemovedHandler OnBonusRemoved;
+		
 		private UnitBehaviorMode unitsBehaviorMode = UnitBehaviorMode.normal;
 		public UnitBehaviorMode UnitsBehaviorMode 
 		{ 
@@ -25,6 +31,9 @@ namespace Pacman.Model
 		
 		private float frighteningTime = 0;
 		private int catchedFrightenedEnemyCount = 0;
+		
+		private float bonusAccessTime = 0;
+		private bool isBonusTime = false;
 		
 		private bool isPause = false;
 		
@@ -56,6 +65,8 @@ namespace Pacman.Model
 			
 			foreach (var enemy in enemies)
 				((EnemyModel)enemy).OnEnemyCatched -= EnemyCatched;
+			
+			((PacmanModel)pacman).PacmanInBonusPoint += CollectBonus;
 		}
 		
 		private void DotCountChanged(int count)
@@ -69,7 +80,10 @@ namespace Pacman.Model
 		public void AddUnit(UnitModel unit)
 		{
 			if (unit.UnitId == UnitDefId.Pacman)
+			{
 				pacman = unit;
+				((PacmanModel)unit).PacmanInBonusPoint += CollectBonus;
+			}
 			else
 			{
 				enemies.Add(unit);
@@ -171,6 +185,33 @@ namespace Pacman.Model
 		
 		private void DropBonus(int currentDotCount)
 		{
+			var dropMoments = gameData.defs.bonuses.dropMoments;
+			
+			foreach (var dropMoment in dropMoments)
+			{
+				if (currentDotCount == dropMoment.dotCount)
+				{
+					bonusAccessTime = gameData.defs.bonuses.accessTime;
+					
+					if (!isBonusTime)
+						OnBonusDropped(gameData.defs.levels[gameController.Level].bonus.type);
+					
+					isBonusTime = true;
+					
+					return;
+				}
+			}
+		}
+		
+		private void CollectBonus()
+		{
+			if (!isBonusTime)
+				return;
+			
+			isBonusTime = false;
+			OnBonusRemoved();
+			
+			gameController.CollectBonus();
 		}
 		
 		private void EnemyCatched()
@@ -215,6 +256,17 @@ namespace Pacman.Model
 			if (isPause)
 				return;
 			
+			if (isBonusTime)
+			{
+				bonusAccessTime -= Time.deltaTime;
+				
+				if (bonusAccessTime <= 0)
+				{
+					isBonusTime = false;
+					OnBonusRemoved();
+				}
+			}
+				
 			if (UnitsBehaviorMode == UnitBehaviorMode.frightening)
 			{
 				frighteningTime -= Time.deltaTime;

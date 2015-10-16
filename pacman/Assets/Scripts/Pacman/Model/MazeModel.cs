@@ -115,7 +115,7 @@ namespace Pacman.Model
 			
 			gameController.CollectDot(dotType);
 			
-			int index = (int)(point.x * Cols + point.y);			
+			int index = (int)(point.x * Cols + point.y);
 			Elements[index] = (int)MazeElementDefId.floor;
 			
 			if (OnDotCollected != null)
@@ -123,6 +123,12 @@ namespace Pacman.Model
 			
 			if (dotType == MazeElementDefId.energizer && OnEnergizerCollected != null)
 				OnEnergizerCollected();	
+		}
+		
+		public bool IsBonusPoint(Vector2 point)
+		{
+			var bonusPoint = gameData.defs.mazes[gameController.CurrentMaze].view.bonusPoint;
+			return point.Equals(new Vector2(bonusPoint.x, bonusPoint.y));
 		}
 	}
 }

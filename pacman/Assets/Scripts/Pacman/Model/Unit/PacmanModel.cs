@@ -5,6 +5,9 @@ namespace Pacman.Model.Unit
 {
 	public class PacmanModel : UnitModel
 	{
+		public delegate void PacmanInBonusPointHandler();
+		public event PacmanInBonusPointHandler PacmanInBonusPoint;
+		
 		private List<MazeElementDefId> dotTypes = new List<MazeElementDefId>()
 		{
 			MazeElementDefId.dot,
@@ -32,6 +35,8 @@ namespace Pacman.Model.Unit
 		public override UnitPosition GetNextMovePoint()
 		{
 			CollectDot();
+			CollectBonus();
+			
 			CheckIsPortMovement();
 			
 			var point = CurrentPosition.point;
@@ -52,6 +57,12 @@ namespace Pacman.Model.Unit
 		{
 			foreach (var dotType in dotTypes)
 				maze.CollectDot(CurrentPosition.point, dotType);
+		}
+		
+		private void CollectBonus()
+		{
+			if (maze.IsBonusPoint(CurrentPosition.point))
+				PacmanInBonusPoint();
 		}
 		
 		public override void Catch()

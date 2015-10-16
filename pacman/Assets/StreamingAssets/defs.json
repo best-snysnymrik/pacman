@@ -195,8 +195,8 @@
 	},
 	"bonuses": {
 		"types": {
-			"cherry" : {
-				"prefab" : "prefab"
+			"Cherry" : {
+				"prefab" : "GameElements/Prefabs/Maze/elements/bonuses/cherry"
 			}
 		},
 		"dropMoments": [
@@ -250,7 +250,7 @@
 						"time": 0
 					}
 				],
-				"frighteningTime": 15
+				"frighteningTime": 10
 			},
 			"speed": {
 				"Pacman": {
@@ -267,7 +267,7 @@
 				}
 			},
 			"bonus": {
-				"type": "cherry",
+				"type": "Cherry",
 				"scores": 100
 			}
 		}

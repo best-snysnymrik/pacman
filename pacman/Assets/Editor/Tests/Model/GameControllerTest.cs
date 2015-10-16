@@ -40,6 +40,16 @@ namespace Tests
 		}
 		
 		[Test]
+		public void testCollectBonus_ScoreCount()
+		{
+			var scores = context.gameController.Scores;
+			
+			context.gameController.CollectBonus();
+			
+			Assert.AreEqual(scores + 100, context.gameController.Scores);
+		}
+		
+		[Test]
 		public void testEnemyCatched_1()
 		{
 			var scores = context.gameController.Scores;

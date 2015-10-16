@@ -163,6 +163,11 @@ namespace Pacman.Model
 			Scores += gameData.defs.mazeElements[((int)dotType).ToString()].scores;
 		}
 		
+		public void CollectBonus()
+		{
+			Scores += gameData.defs.levels[Level].bonus.scores;
+		}
+		
 		public void PacmanCatched()
 		{
 			--Lives;

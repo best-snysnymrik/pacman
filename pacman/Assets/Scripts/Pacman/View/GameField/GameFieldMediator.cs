@@ -23,6 +23,7 @@ namespace Pacman.View.GameField
 		private Vector3 cameraOffset = Vector3.zero;
 		
 		private Dictionary<int, GameObject> dots = new Dictionary<int, GameObject>();
+		private GameObject bonus;
 		
 		private void Awake()
 		{
@@ -34,8 +35,9 @@ namespace Pacman.View.GameField
 			gameController.OnPause += gameModel.Pause;
 			gameController.OnResume += gameModel.Resume;
 			
-			gameController.OnLivesChanged += LivesCountChanged;
-			
+			gameModel.OnBonusDropped += CreateBonus;
+			gameModel.OnBonusRemoved += RemoveBonus;
+						
 			mazeModel.OnDotCollected += DotCollected;
 			
 			CreateMaze();
@@ -53,7 +55,8 @@ namespace Pacman.View.GameField
 			gameController.OnPause -= gameModel.Pause;
 			gameController.OnResume -= gameModel.Resume;
 			
-			gameController.OnLivesChanged -= LivesCountChanged;
+			gameModel.OnBonusDropped -= CreateBonus;
+			gameModel.OnBonusRemoved -= RemoveBonus;
 			
 			mazeModel.OnDotCollected -= DotCollected;
 			
@@ -150,9 +153,18 @@ namespace Pacman.View.GameField
 			if (dots.ContainsKey(index))
 				DestroyObject(dots[index]);
 		}
-		
-		private void LivesCountChanged(int count)
+
+		private void CreateBonus(string bonusType)
 		{
+			var point = gameData.defs.mazes[gameController.CurrentMaze].view.bonusPoint;
+			var xzPosition = new Vector2(point.x, point.y);
+				
+			bonus = view.CreateMazeElement(gameData.defs.bonuses.types[bonusType].prefab, xzPosition);
+		}
+		
+		private void RemoveBonus()
+		{
+			DestroyObject(bonus);
 		}
 	}
 }

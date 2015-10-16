@@ -55,7 +55,7 @@ namespace Pacman.Data
 	{
 		public Dictionary<string, BonusTypeDef> types;
 		public List<BonusDropMomentDef> dropMoments;
-		public int accessTime;
+		public float accessTime;
 	}
 	
 	public class BonusTypeDef

@@ -15,17 +15,22 @@ namespace Pacman.View.UI.Screen
 		
 		void Awake()
 		{
-			view.OnPausePressed += PausePressed;			
+			view.OnPausePressed += PausePressed;
+			
 			gameController.OnScoresChanged += SetScoresCount;
+			gameController.OnLivesChanged += LivesCountChanged;
 			
 			SetScoresCount(gameController.Scores);
+			SetScoresCount(gameController.Lives);
 		}
 		
 		void OnDestroy()
 		{
-			view.OnPausePressed -= PausePressed;			
+			view.OnPausePressed -= PausePressed;
+			
 			gameController.OnScoresChanged -= SetScoresCount;
-		}
+			gameController.OnLivesChanged -= LivesCountChanged;
+		}		
 		
 		private void PausePressed()
 		{
@@ -36,6 +41,10 @@ namespace Pacman.View.UI.Screen
 		private void SetScoresCount(int scoresCount)
 		{
 			view.SetScoresCount(scoresCount);
+		}
+		
+		private void LivesCountChanged(int count)
+		{
 		}
 	}
 }
