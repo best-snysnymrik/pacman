@@ -32,7 +32,7 @@ namespace Pacman.View.UI.Screen
 		private void CreateMazeButtons()
 		{
 			foreach (var maze in gameData.defs.mazes)
-				view.CreateMazeButton(maze.Key, maze.Value.name);
+				view.CreateMazeButton(maze.Key, maze.Value.name, maze.Value.icon);
 		}
 		
 		private void MazeChosen(string mazeId)

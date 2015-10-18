@@ -68,5 +68,21 @@ namespace Tests
 			
 			Assert.AreEqual(scores + 1600, context.gameController.Scores);
 		}
+		
+		[Test]
+		public void testIsCurrentLevelLast_Last()
+		{
+			var result = context.gameController.IsCurrentLevelLast(2);
+			
+			Assert.IsTrue(result);
+		}
+		
+		[Test]
+		public void testIsCurrentLevelLast_NotLast()
+		{
+			var result = context.gameController.IsCurrentLevelLast(1);
+			
+			Assert.IsFalse(result);
+		}
 	}
 }

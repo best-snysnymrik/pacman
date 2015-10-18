@@ -24,7 +24,9 @@ namespace Pacman.View.Units
 		void OnDestroy()
 		{
 			view.OnCompleteMove -= Move;
-			view.OnCollisionDetected += CollisionDetected;
+			view.OnCollisionDetected -= CollisionDetected;
+			
+			model = null;
 		}
 		
 		public void SetUnitModel(UnitModel model)

@@ -22,9 +22,6 @@ namespace Pacman.View.GameField
 		
 		private Vector3 cameraOffset = Vector3.zero;
 		
-		private Dictionary<int, GameObject> dots = new Dictionary<int, GameObject>();
-		private GameObject bonus;
-		
 		private void Awake()
 		{
 			gameModel = new GameModel();
@@ -34,6 +31,10 @@ namespace Pacman.View.GameField
 			
 			gameController.OnPause += gameModel.Pause;
 			gameController.OnResume += gameModel.Resume;
+			
+			gameController.OnGameEnd += DestroyUnits;
+			gameController.OnNextLevel += RecreateField;
+			gameController.OnReplay += RecreateField;
 			
 			gameModel.OnBonusDropped += CreateBonus;
 			gameModel.OnBonusRemoved += RemoveBonus;
@@ -54,6 +55,10 @@ namespace Pacman.View.GameField
 			
 			gameController.OnPause -= gameModel.Pause;
 			gameController.OnResume -= gameModel.Resume;
+			
+			gameController.OnGameEnd -= DestroyUnits;
+			gameController.OnNextLevel -= RecreateField;
+			gameController.OnReplay -= RecreateField;
 			
 			gameModel.OnBonusDropped -= CreateBonus;
 			gameModel.OnBonusRemoved -= RemoveBonus;
@@ -86,11 +91,28 @@ namespace Pacman.View.GameField
 				
 				if (elementId > (int)MazeElementDefId.floor)
 				{
-					var element = view.CreateMazeElement(GetPrefabNameByMazeElementId(elementId), xzPosition);
-					
 					if (elementId == (int)MazeElementDefId.dot || elementId == (int)MazeElementDefId.energizer)
-						dots[i] = element;					
+						view.CreateDot(i, GetPrefabNameByMazeElementId(elementId), xzPosition);
+					else
+						view.CreateMazeElement(GetPrefabNameByMazeElementId(elementId), xzPosition);
 				}
+			}
+		}
+		
+		private void CreateDots()
+		{
+			var elements = mazeModel.Elements;
+			
+			for (int i = 0; i < elements.Count; ++i)
+			{
+				int elementId = elements[i];
+				
+				if (elementId != (int)MazeElementDefId.dot && elementId != (int)MazeElementDefId.energizer)
+					continue;
+				
+				var xzPosition = new Vector2(i / mazeModel.Cols, i % mazeModel.Cols);
+				
+				view.CreateDot(i, GetPrefabNameByMazeElementId(elementId), xzPosition);
 			}
 		}
 		
@@ -135,6 +157,49 @@ namespace Pacman.View.GameField
 			#endif
 		}
 		
+		private void DotCollected(Vector2 point)
+		{
+			int index = (int)(point.x * mazeModel.Cols + point.y);
+			view.DestroyDot(index);
+		}
+
+		private void CreateBonus(string bonusType)
+		{
+			var point = gameData.defs.mazes[gameController.CurrentMaze].view.bonusPoint;
+			var xzPosition = new Vector2(point.x, point.y);
+			
+			view.CreateBonus(gameData.defs.bonuses.types[bonusType].prefab, xzPosition);
+		}
+		
+		private void RemoveBonus()
+		{
+			view.DestroyBonus();
+		}
+		
+		private void DestroyUnits()
+		{
+			gameModel.RemoveAllUnits();
+			
+			view.DestroyUnits();
+		}
+		
+		private void DestroyDots()
+		{
+			view.DestroyDots();
+		}
+		
+		private void RecreateField()
+		{
+			mazeModel.SetUpMaze();
+			
+			DestroyDots();
+			CreateDots();
+			
+			CreateUnits();
+						
+			gameModel.StartGame();
+		}
+		
 		private void SetUpCamera()
 		{
 			cameraOffset = new Vector3((float)mazeModel.Rows / 2f, 0, (float)mazeModel.Cols / 2f);
@@ -144,27 +209,6 @@ namespace Pacman.View.GameField
 		private void SetCameraPosition(Vector3 position)
 		{
 			view.SetCameraPosition(position);
-		}
-		
-		private void DotCollected(Vector2 point)
-		{
-			int index = (int)(point.x * mazeModel.Cols + point.y);
-			
-			if (dots.ContainsKey(index))
-				DestroyObject(dots[index]);
-		}
-
-		private void CreateBonus(string bonusType)
-		{
-			var point = gameData.defs.mazes[gameController.CurrentMaze].view.bonusPoint;
-			var xzPosition = new Vector2(point.x, point.y);
-				
-			bonus = view.CreateMazeElement(gameData.defs.bonuses.types[bonusType].prefab, xzPosition);
-		}
-		
-		private void RemoveBonus()
-		{
-			DestroyObject(bonus);
 		}
 	}
 }

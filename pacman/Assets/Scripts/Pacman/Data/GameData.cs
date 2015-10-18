@@ -95,11 +95,11 @@ namespace Pacman.Data
 				OnDataInitialized();
 		}
 		
-		public void CreateNewMaze(string mazeId)
+		public void CreateNewMaze(string mazeId, int level)
 		{
 			Maze newMaze = new Maze();
 			
-			newMaze.level = 0;
+			newMaze.level = level;
 			newMaze.scores = 0;
 			newMaze.dots = 0;
 			newMaze.lives = defs.commonValues.livesCount;
@@ -119,6 +119,13 @@ namespace Pacman.Data
 			}
 			
 			state.mazes[mazeId] = newMaze;
+			
+			SaveStateData();
+		}
+		
+		public void RemoveMaze(string mazeId)
+		{
+			state.mazes.Remove(mazeId);
 			
 			SaveStateData();
 		}

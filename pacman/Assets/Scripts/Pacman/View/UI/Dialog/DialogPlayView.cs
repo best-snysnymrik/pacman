@@ -12,6 +12,8 @@ namespace Pacman.View.UI.Dialog
 		private Button newGameButton;
 		[SerializeField]
 		private Button continueGameButton;
+		[SerializeField]
+		private Text continueGameButtonText;
 		
 		public delegate void ButtonPressedHandler();
 		public event ButtonPressedHandler OnClosePressed;
@@ -35,6 +37,11 @@ namespace Pacman.View.UI.Dialog
 		public void HideContinueGameButton()
 		{
 			continueGameButton.gameObject.SetActive(false);
+		}
+		
+		public void SetCurrentLevel(int level)
+		{
+			continueGameButtonText.text = string.Format(continueGameButtonText.text, level);
 		}
 	}
 }

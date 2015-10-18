@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using Pacman.Model;
+using Pacman.View.UI.Dialog;
 
 namespace Pacman.View.Scene
 {	
@@ -74,7 +75,12 @@ namespace Pacman.View.Scene
 		{
 			var dialogData = dialogs.Find(x => x.dialogType == dialogType);
 			
-			activeDialogs.Add(InstantiateObject(dialogData.dialogPrefab, Gui, false));
+			var dialog = InstantiateObject(dialogData.dialogPrefab, Gui, false);
+			activeDialogs.Add(dialog);
+			
+			var endDialog = dialog.GetComponent<DialogEndMediator>();
+			if (endDialog != null)
+				endDialog.SetDialogType(dialogType);
 		}
 		
 		public void CloseDialog(GameObject obj)

@@ -18,7 +18,8 @@ namespace Tests
 		
 		public void SetCurrentPosition(UnitPosition position)
 		{
-			CurrentPosition = position;
+			nextPosition = position;
+			CurrentPosition = nextPosition;
 		}
 		
 		public UnitPosition GetCurrentPosition()

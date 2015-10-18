@@ -45,6 +45,7 @@ namespace Pacman.View.UI.Screen
 		
 		private void LivesCountChanged(int count)
 		{
+			view.SetLivesCount(count);
 		}
 	}
 }

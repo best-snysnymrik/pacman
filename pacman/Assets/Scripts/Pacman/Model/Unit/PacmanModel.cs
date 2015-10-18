@@ -28,12 +28,13 @@ namespace Pacman.Model.Unit
 		
 		public void SetMoveDirection(Direction direction)
 		{
-			CurrentPosition.direction = direction;
-			UpdatePosition();
+			nextPosition.direction = direction;
 		}
 		
 		public override UnitPosition GetNextMovePoint()
 		{
+			CurrentPosition = nextPosition;
+			
 			CollectDot();
 			CollectBonus();
 			
@@ -44,9 +45,7 @@ namespace Pacman.Model.Unit
 			
 			if (maze.StepIsPossible(point, direction))
 			{
-				var nextPosition = new UnitPosition(point + steps[direction], direction);				
-				CurrentPosition = nextPosition;
-				
+				nextPosition = new UnitPosition(point + steps[direction], direction);
 				return nextPosition;
 			}
 			
@@ -67,8 +66,8 @@ namespace Pacman.Model.Unit
 		
 		public override void Catch()
 		{
-			gameController.PacmanCatched();
 			base.Catch();
+			gameController.PacmanCatched();
 		}
 	}
 }

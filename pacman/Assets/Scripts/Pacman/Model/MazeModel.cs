@@ -45,7 +45,7 @@ namespace Pacman.Model
 					OnDotCountChanged(value);
 				
 				if (dotCount == allDotCount)
-					Debug.Log("win");
+					gameController.Win();
 			}
 		}
 		
@@ -59,6 +59,11 @@ namespace Pacman.Model
 		public Dictionary<string, UnitPoint> Units { get; private set; }
 				
 		public MazeModel()
+		{
+			SetUpMaze();			
+		}
+		
+		public void SetUpMaze()
 		{
 			Elements = gameData.state.mazes[gameController.CurrentMaze].elements;
 			
@@ -74,7 +79,7 @@ namespace Pacman.Model
 			Units = gameData.state.mazes[gameController.CurrentMaze].units;
 			
 			allDotCount = gameData.defs.mazes[gameController.CurrentMaze].view.dotCount;
-			DotCount = gameData.state.mazes[gameController.CurrentMaze].dots;			
+			DotCount = gameData.state.mazes[gameController.CurrentMaze].dots;
 		}
 		
 		public bool StepIsPossible(Vector2 point, Direction stepDirection)
@@ -95,6 +100,28 @@ namespace Pacman.Model
 			
 			return false;
 		}
+		
+		public bool PortStepIsPossible(Vector2 point, Direction unitDirection)
+		{
+			if (!IsPointOfType(point, MazeElementDefId.port))
+				return false;
+			
+			int index = (int)(point.x * Cols + point.y);
+			
+			switch (unitDirection)
+			{
+				case Direction.left:
+					return index % Cols == 0;
+				case Direction.right:
+					return (index + 1) % Cols == 0;
+				case Direction.up:
+					return index < Cols;
+				case Direction.down:
+					return index > (Cols * Rows - Cols);
+			}
+			
+			return false;
+		}
 				
 		public bool IsPointOfType(Vector2 point, MazeElementDefId elementDefId)
 		{
@@ -110,13 +137,13 @@ namespace Pacman.Model
 		{
 			if (!IsPointOfType(point, dotType))
 				return;
-			
-			DotCount += 1;
-			
+
 			gameController.CollectDot(dotType);
 			
 			int index = (int)(point.x * Cols + point.y);
 			Elements[index] = (int)MazeElementDefId.floor;
+			
+			DotCount += 1;
 			
 			if (OnDotCollected != null)
 				OnDotCollected(point);

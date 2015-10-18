@@ -21,6 +21,8 @@ namespace Pacman.View.UI.Dialog
 			
 			if (!gameController.IsSavedGameExist())
 				view.HideContinueGameButton();
+			else
+				view.SetCurrentLevel(gameController.GetSavedGameLevel());
 		}
 		
 		void OnDestroy()

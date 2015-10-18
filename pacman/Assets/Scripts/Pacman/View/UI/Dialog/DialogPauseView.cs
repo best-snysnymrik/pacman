@@ -7,24 +7,24 @@ namespace Pacman.View.UI.Dialog
 	public class DialogPauseView : MonoBehaviour
 	{
 		[SerializeField]
-		private Button exitButton;
+		private Button saveAndExitButton;
 		[SerializeField]
-		private Button continueButton;
+		private Button resumeButton;
 		
 		public delegate void ButtonPressedHandler();
-		public event ButtonPressedHandler OnExitPressed;
-		public event ButtonPressedHandler OnContinuePressed;
+		public event ButtonPressedHandler OnSaveAndExitGamePressed;
+		public event ButtonPressedHandler OnResumePressed;
 		
 		void Awake()
 		{
-			exitButton.onClick.AddListener(() => OnExitPressed());
-			continueButton.onClick.AddListener(() => OnContinuePressed());
+			saveAndExitButton.onClick.AddListener(() => OnSaveAndExitGamePressed());
+			resumeButton.onClick.AddListener(() => OnResumePressed());
 		}
 		
 		void OnDestroy()
 		{
-			exitButton.onClick.RemoveAllListeners();
-			continueButton.onClick.RemoveAllListeners();
+			saveAndExitButton.onClick.RemoveAllListeners();
+			resumeButton.onClick.RemoveAllListeners();
 		}
 	}
 }

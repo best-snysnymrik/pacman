@@ -8,7 +8,10 @@ namespace Pacman.Model
 	public enum DialogType
 	{
 		Play,
-		Pause
+		Pause,
+		Defeat,
+		Win,
+		WinMaze
 	}
 	
 	public class GuiManager

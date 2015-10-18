@@ -57,7 +57,95 @@ namespace Tests
 			var result = context.mazeModel.StepIsPossible(point, Direction.down);
 			
 			Assert.IsFalse(result);
+		}		
+		
+		[Test]
+		public void testPortStepIsPossible_LeftPossibleStep()
+		{
+			Vector2 point = new Vector2(14, 0);
+			Direction direction = Direction.left;
+			
+			var result = context.mazeModel.PortStepIsPossible(point, direction);
+			
+			Assert.IsTrue(result);
 		}
+		
+		[Test]
+		public void testPortStepIsPossible_RightPossibleStep()
+		{
+			Vector2 point = new Vector2(14, 27);
+			Direction direction = Direction.right;
+			
+			var result = context.mazeModel.PortStepIsPossible(point, direction);
+			
+			Assert.IsTrue(result);
+		}
+		
+		[Test]
+		public void testPortStepIsPossible_UpPossibleStep()
+		{
+			Vector2 point = new Vector2(0, 21);
+			Direction direction = Direction.up;
+			
+			var result = context.mazeModel.PortStepIsPossible(point, direction);
+			
+			Assert.IsTrue(result);
+		}
+		
+		[Test]
+		public void testPortStepIsPossible_DownPossibleStep()
+		{
+			Vector2 point = new Vector2(30, 21);
+			Direction direction = Direction.down;
+			
+			var result = context.mazeModel.PortStepIsPossible(point, direction);
+			
+			Assert.IsTrue(result);
+		}
+		
+		[Test]
+		public void testPortStepIsPossible_LeftImpossibleStep()
+		{
+			Vector2 point = new Vector2(14, 0);
+			Direction direction = Direction.right;
+			
+			var result = context.mazeModel.PortStepIsPossible(point, direction);
+			
+			Assert.IsFalse(result);
+		}
+		
+		[Test]
+		public void testPortStepIsPossible_RigthImpossibleStep()
+		{
+			Vector2 point = new Vector2(14, 27);
+			Direction direction = Direction.up;
+			
+			var result = context.mazeModel.PortStepIsPossible(point, direction);
+			
+			Assert.IsFalse(result);
+		}
+		
+		[Test]
+		public void testPortStepIsPossible_UpImpossibleStep()
+		{
+			Vector2 point = new Vector2(0, 21);
+			Direction direction = Direction.down;
+			
+			var result = context.mazeModel.PortStepIsPossible(point, direction);
+			
+			Assert.IsFalse(result);
+		}
+		
+		[Test]
+		public void testPortStepIsPossible_DownImpossibleStep()
+		{
+			Vector2 point = new Vector2(30, 21);
+			Direction direction = Direction.left;
+			
+			var result = context.mazeModel.PortStepIsPossible(point, direction);
+			
+			Assert.IsFalse(result);
+		}		
 		
 		[Test]
 		public void testIsPointOfType_IsPortPoint()

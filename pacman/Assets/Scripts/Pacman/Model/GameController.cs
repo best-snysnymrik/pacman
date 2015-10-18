@@ -29,12 +29,16 @@ namespace Pacman.Model
 		public delegate void GameActivityStateChangedHandler();
 		public event GameActivityStateChangedHandler OnPause;
 		public event GameActivityStateChangedHandler OnResume;
+		public event GameActivityStateChangedHandler OnGameEnd;
+		public event GameActivityStateChangedHandler OnNextLevel;
+		public event GameActivityStateChangedHandler OnReplay;
 		
 		public delegate void ValueChangedHandler(int newValue);
 		public event ValueChangedHandler OnScoresChanged;
 		public event ValueChangedHandler OnLivesChanged;
 		
 		private GameData gameData = GameData.gameData;
+		private GuiManager guiManager = GuiManager.guiManager;
 
 		private GameCondition condition;		
 		public GameCondition Condition 
@@ -125,16 +129,30 @@ namespace Pacman.Model
 		
 		public void StartNewGame()
 		{
-			gameData.CreateNewMaze(CurrentMaze);
-			Condition = GameCondition.Game;
-			
-			SetMazeProgress();
+			gameData.CreateNewMaze(CurrentMaze, 0);
+			StartGame();
 		}
 		
 		public void StartSavedGame()
 		{
-			Condition = GameCondition.Game;
-			
+			StartGame();
+		}
+		
+		public void StartNextLevel()
+		{
+			OnNextLevel();
+			SetMazeProgress();
+		}
+		
+		public void Replay()
+		{
+			OnReplay();
+			SetMazeProgress();
+		}
+		
+		private void StartGame()
+		{
+			Condition = GameCondition.Game;			
 			SetMazeProgress();
 		}
 		
@@ -146,6 +164,11 @@ namespace Pacman.Model
 		public bool IsSavedGameExist()
 		{
 			return gameData.state.mazes.ContainsKey(CurrentMaze);
+		}
+		
+		public int GetSavedGameLevel()
+		{
+			return gameData.state.mazes[CurrentMaze].level;
 		}
 		
 		public void Pause()
@@ -180,13 +203,34 @@ namespace Pacman.Model
 		
 		public void Win()
 		{
-			Debug.Log("Win");
-			//Level++;
+			Pause();
+			OnGameEnd();
+			
+			if (!IsCurrentLevelLast(Level))
+			{
+				guiManager.ShowDialog(DialogType.Win);
+				gameData.CreateNewMaze(CurrentMaze, ++Level);
+			}
+			else
+			{
+				guiManager.ShowDialog(DialogType.WinMaze);
+				gameData.RemoveMaze(CurrentMaze);
+			}
 		}
 		
-		public void GameOver()
+		public bool IsCurrentLevelLast(int level)
 		{
-			Debug.Log("GameOver");
+			return level == (gameData.defs.levels.Count - 1);
+		}
+		
+		private void GameOver()
+		{
+			Pause();
+			OnGameEnd();
+			
+			gameData.CreateNewMaze(CurrentMaze, Level);
+			
+			guiManager.ShowDialog(DialogType.Defeat);
 		}
 	}
 }

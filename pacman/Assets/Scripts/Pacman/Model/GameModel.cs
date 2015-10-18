@@ -54,6 +54,7 @@ namespace Pacman.Model
 			this.maze = maze;			
 			
 			dotCount = maze.DotCount;
+			
 			maze.OnDotCountChanged += DotCountChanged;
 			maze.OnEnergizerCollected += SetFrighteningBehaviorMode;
 		}
@@ -63,10 +64,7 @@ namespace Pacman.Model
 			maze.OnDotCountChanged -= DotCountChanged;
 			maze.OnEnergizerCollected -= SetFrighteningBehaviorMode;
 			
-			foreach (var enemy in enemies)
-				((EnemyModel)enemy).OnEnemyCatched -= EnemyCatched;
-			
-			((PacmanModel)pacman).PacmanInBonusPoint += CollectBonus;
+			RemoveListeners();
 		}
 		
 		private void DotCountChanged(int count)
@@ -89,6 +87,26 @@ namespace Pacman.Model
 				enemies.Add(unit);
 				((EnemyModel)unit).OnEnemyCatched += EnemyCatched;
 			}
+		}
+		
+		public void RemoveAllUnits()
+		{
+			RemoveListeners();
+			
+			enemies.Clear();
+			pacman = null;
+		}
+		
+		private void RemoveListeners()
+		{
+			foreach (EnemyModel enemy in enemies)
+			{
+				enemy.OnEnemyCatched -= EnemyCatched;
+				enemy.Unsubscribe();
+			}
+			
+			if (pacman != null)
+				((PacmanModel)pacman).PacmanInBonusPoint -= CollectBonus;
 		}
 		
 		public void StartGame()

@@ -16,6 +16,7 @@ namespace Pacman.Data
 	public class MazeDef
 	{
 		public string name;
+		public string icon;
 		public MazeViewDef view;
 		public Dictionary<string, UnitPositionDef> units;
 	}

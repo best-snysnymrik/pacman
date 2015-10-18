@@ -25,8 +25,7 @@ namespace Pacman.Model.Unit
 				{
 					// при смене режима преследование/разбегание
 					// привидение меняет направление движения на противоположное
-					CurrentPosition.direction = oppositeDirections[CurrentPosition.direction];
-					UpdatePosition();
+					nextPosition.direction = oppositeDirections[nextPosition.direction];
 				}
 				
 				enemyBehaviorMode = value;
@@ -95,8 +94,7 @@ namespace Pacman.Model.Unit
 			// TODO: надо придумать решение выхода посимпатичнее
 			
 			// сначала выводим привидение из "дома"
-			CurrentPosition.point = maze.EnemyStartPosition;
-			UpdatePosition();
+			nextPosition.point = maze.EnemyStartPosition;
 			
 			MoveEnemyToStartPoint(maze.EnemyStartPosition);
 		}
@@ -114,7 +112,9 @@ namespace Pacman.Model.Unit
 		}
 		
 		public override UnitPosition GetNextMovePoint()
-		{		
+		{
+			CurrentPosition = nextPosition;
+			
 			CheckIsPortMovement();
 			
 			switch (UnitBehaviorMode)
@@ -141,9 +141,7 @@ namespace Pacman.Model.Unit
 				
 				if (maze.StepIsPossible(point, stepDirection) && stepDirection != oppositeDirections[direction])
 				{
-					var nextPosition = new UnitPosition(point + step, stepDirection);					
-					CurrentPosition = nextPosition;
-					
+					nextPosition = new UnitPosition(point + step, stepDirection);					
 					return nextPosition;
 				}
 			}
@@ -159,7 +157,7 @@ namespace Pacman.Model.Unit
 			var targetPoint = GetTargetPoint();
 			
 			float minDistance = maze.Cols * maze.Rows;
-			UnitPosition nextPosition = null;
+			UnitPosition possibleNextPosition = null;
 			
 			// из всех возможных шагов выбираем тот, 
 			// который ближе к целевой точке
@@ -172,16 +170,15 @@ namespace Pacman.Model.Unit
 					if (distance < minDistance)
 					{
 						minDistance = distance;
-						nextPosition = new UnitPosition(point + step.Value, step.Key);
+						possibleNextPosition = new UnitPosition(point + step.Value, step.Key);
 					}
 				}
 			}
 			
-			if (nextPosition == null)
+			if (possibleNextPosition == null)
 				return CurrentPosition;
 			
-			CurrentPosition = nextPosition;
-			
+			nextPosition = possibleNextPosition;
 			return nextPosition;
 		}
 		

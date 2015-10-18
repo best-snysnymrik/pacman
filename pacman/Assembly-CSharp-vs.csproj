@@ -66,6 +66,8 @@
      <Compile Include="Assets\Scripts\Pacman\View\GameField\GameFieldMediator.cs" />
      <Compile Include="Assets\Scripts\Pacman\View\GameField\GameFieldView.cs" />
      <Compile Include="Assets\Scripts\Pacman\View\Scene\SceneView.cs" />
+     <Compile Include="Assets\Scripts\Pacman\View\UI\Dialog\DialogEndMediator.cs" />
+     <Compile Include="Assets\Scripts\Pacman\View\UI\Dialog\DialogEndView.cs" />
      <Compile Include="Assets\Scripts\Pacman\View\UI\Dialog\DialogPauseMediator.cs" />
      <Compile Include="Assets\Scripts\Pacman\View\UI\Dialog\DialogPauseView.cs" />
      <Compile Include="Assets\Scripts\Pacman\View\UI\Dialog\DialogPlayMediator.cs" />

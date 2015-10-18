@@ -15,23 +15,23 @@ namespace Pacman.View.UI.Dialog
 		
 		void Awake()
 		{
-			view.OnExitPressed += ExitPressed;
-			view.OnContinuePressed += ContinuePressed;
+			view.OnSaveAndExitGamePressed += SaveAndExitPressed;
+			view.OnResumePressed += ResumePressed;
 		}
 		
 		void OnDestroy()
 		{
-			view.OnExitPressed -= ExitPressed;
-			view.OnContinuePressed -= ContinuePressed;
+			view.OnSaveAndExitGamePressed -= SaveAndExitPressed;
+			view.OnResumePressed -= ResumePressed;
 		}
 		
-		private void ExitPressed()
+		private void SaveAndExitPressed()
 		{
 			gameController.SaveGame();
 			gameController.ShowMainMenu();
 		}
 		
-		private void ContinuePressed()
+		private void ResumePressed()
 		{
 			gameController.Resume();
 			guiManager.CloseDialog(gameObject);

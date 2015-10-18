@@ -30,6 +30,8 @@ namespace Pacman.Model.Unit
 		public string UnitId { get; protected set; }
 		public float Speed { get; private set; }
 		
+		protected UnitPosition nextPosition;
+		
 		private UnitPosition currentPosition;
 		protected UnitPosition CurrentPosition
 		{
@@ -91,7 +93,9 @@ namespace Pacman.Model.Unit
 		protected virtual void InitMazeData()
 		{
 			var currentPoint = maze.Units[UnitId];	
-			CurrentPosition = new UnitPosition(new Vector2(currentPoint.position.x, currentPoint.position.y), (Direction)currentPoint.direction);
+			nextPosition = new UnitPosition(new Vector2(currentPoint.position.x, currentPoint.position.y), (Direction)currentPoint.direction);
+			
+			CurrentPosition = nextPosition;
 			
 			portMovements[Direction.up] = new Vector2(maze.Rows - 1, 0);
 			portMovements[Direction.left] = new Vector2(0, maze.Cols - 1);
@@ -137,14 +141,14 @@ namespace Pacman.Model.Unit
 		/// </summary>
 		protected void CheckIsPortMovement()
 		{
-			if (!maze.IsPointOfType(CurrentPosition.point, MazeElementDefId.port))
+			if (!maze.PortStepIsPossible(CurrentPosition.point, CurrentPosition.direction))
 				return;
 			
 			// переносим юнит на другой край лабиринта
 			Vector2 newPoint = CurrentPosition.point + portMovements[CurrentPosition.direction];
 			
-			CurrentPosition.point = newPoint;
-			UpdatePosition();
+			nextPosition.point = newPoint;
+			CurrentPosition = nextPosition;
 			
 			SetUnitToPoint(newPoint);
 		}
@@ -175,14 +179,15 @@ namespace Pacman.Model.Unit
 			
 			var startDirection = gameData.defs.mazes[gameController.CurrentMaze].units[UnitId].direction;
 			
-			CurrentPosition = new UnitPosition(startPosition, (Direction)startDirection);
+			nextPosition = new UnitPosition(startPosition, (Direction)startDirection);
+			CurrentPosition = nextPosition;
 			
 			SetUnitToPoint(startPosition);
 			
 			StartMove();
 		}
 		
-		private void Stop()
+		public void Stop()
 		{
 			try
 			{

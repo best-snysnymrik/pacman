@@ -18,13 +18,13 @@ namespace Pacman.View.UI.Screen
 		public delegate void MazeChosenHandler(string mazeId);
 		public event MazeChosenHandler OnMazeChosen;
 		
-		public void CreateMazeButton(string mazeId, string mazeName)
+		public void CreateMazeButton(string mazeId, string mazeName, string mazeIconPath)
 		{
 			var instance = Instantiate(mazeButtonPrefab) as GameObject;
 			instance.transform.SetParent(mazeButtonsContainer.transform);
 			
 			var widget = instance.GetComponent<WidgetMazeChooseButton>();
-			widget.SetData(mazeName);
+			widget.SetData(mazeName, mazeIconPath);
 			widget.button.onClick.AddListener(() => OnMazeChosen(mazeId));
 			
 			widgets.Add(widget);
